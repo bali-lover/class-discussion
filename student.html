@@ -1,0 +1,3402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학급 토론 참여 - 학생용 | Real-time Classroom Discussion</title>
+    <meta name="description" content="실시간 학급 토론 참여 시스템 - 학생용 인터페이스">
+    <meta name="keywords" content="학급토론, 학생참여, 실시간토론, 온라인교육">
+    <meta name="author" content="Claude Code">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="학급 토론 참여 - 학생용">
+    <meta property="og:description" content="실시간 학급 토론에 참여하세요">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-username.github.io/classroom-discussion/student.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>"
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 헤더 스타일 */
+        .header {
+            background-color: white;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 6px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0 0 4px 0;
+            font-size: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .header h1::before {
+            content: "🎓";
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            margin: 3px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        /* 컨테이너 스타일 */
+        .main-container {
+            width: 100%;
+            margin: 0;
+            padding: 0 15px;
+        }
+
+        /* 상태 영역 스타일 */
+        .status-section {
+            background: white;
+            border-radius: 6px;
+            padding: 12px 15px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+            margin-bottom: 8px;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+
+        .discussion-info {
+            text-align: center;
+            color: #495057;
+        }
+
+        .discussion-title-box {
+            background: #fff3cd;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .discussion-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 0;
+            text-align: left;
+        }
+
+        .discussion-stats {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: right;
+        }
+
+
+        /* 메인 콘텐츠 영역 */
+        .content-section {
+            background: white;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        /* 입력 폼 스타일 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        /* 토론방 목록 스타일 */
+        .room-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .room-item {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .room-item:hover {
+            border-color: #007bff;
+            background: #f8f9fa;
+        }
+
+        .room-item.active {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .room-item.waiting {
+            border-color: #ffc107;
+            background: #fff3cd;
+        }
+
+        .room-item.closed {
+            border-color: #6c757d;
+            background: #f8f9fa;
+            opacity: 0.7;
+        }
+
+        .room-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .room-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .room-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background: #cce7ff;
+            color: #004085;
+        }
+
+        .status-waiting {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-closed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .room-info {
+            font-size: 13px;
+            color: #6c757d;
+            display: flex;
+            gap: 15px;
+        }
+
+        /* 채팅 및 토론 영역 */
+        .chat-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            height: 500px;
+        }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: 260px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .sidebar-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .student-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .room-info-box {
+            background: #e7f3ff;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid #007bff;
+        }
+
+        .time-remaining {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            text-align: center;
+            margin: 8px 0;
+        }
+
+        .teacher-messages {
+            background: #e7f3ff;
+            border: 1px solid #b6d7ff;
+            border-radius: 6px;
+            max-height: 120px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        
+        .teacher-message {
+            background: white;
+            margin: 5px;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #007bff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .teacher-message-content {
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+        
+        .teacher-message-time {
+            font-size: 10px;
+            color: #6c757d;
+            text-align: right;
+        }
+
+        .teacher-message {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .teacher-message:hover {
+            background: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        /* 교사 메시지 모달 스타일 */
+        .teacher-message-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .teacher-message-modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .teacher-message-modal-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .teacher-message-modal-body {
+            padding: 20px;
+        }
+
+        .teacher-message-item {
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+
+        .teacher-message-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .teacher-message-item-content {
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .teacher-message-item-time {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: right;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 채팅 메시지 스타일 */
+        .chat-message {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 70%;
+        }
+
+        .chat-message.my-message {
+            background: #007bff;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.other-message {
+            background: white;
+            border: 1px solid #dee2e6;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .message-author {
+            font-weight: bold;
+        }
+
+        .my-message .message-author,
+        .my-message .message-time {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .other-message .message-author {
+            color: #495057;
+        }
+
+        .message-time {
+            color: #6c757d;
+        }
+
+        .message-content {
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        /* 이모지 피커 스타일 */
+        .emoji-picker {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            width: 320px;
+            max-height: 300px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .emoji-categories {
+            display: flex;
+            border-bottom: 1px solid #dee2e6;
+            background: #f8f9fa;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .emoji-category {
+            flex: 1;
+            padding: 10px 5px;
+            border: none;
+            background: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .emoji-category:hover {
+            background: #e9ecef;
+        }
+
+        .emoji-category.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .emoji-item {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emoji-item:hover {
+            background: #f8f9fa;
+        }
+
+        .emoji-btn:hover {
+            background: #f8f9fa !important;
+            border-radius: 50%;
+        }
+
+        .other-rooms {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .room-item-mini {
+            padding: 8px 10px;
+            margin-bottom: 5px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .room-item-mini:hover {
+            background: #e9ecef;
+        }
+
+        .room-item-mini.current {
+            background: #d4edda;
+            border-left: 3px solid #28a745;
+        }
+
+        /* 토론 화면 레이아웃 수정 */
+        .discussion-layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 20px;
+            align-items: start;
+            width: 100%;
+        }
+
+        .chat-section {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            font-weight: bold;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 10px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+
+        .message-mine {
+            background: #007bff;
+            color: white;
+            margin-left: auto;
+        }
+
+        .message-other {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .message-author {
+            font-size: 11px;
+            margin-bottom: 3px;
+            opacity: 0.8;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .chat-input button {
+            padding: 8px 15px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* 포스트잇 보드 */
+        .postit-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .postit {
+            background: #ffeb3b;
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 12px;
+            min-height: 20px;
+            position: relative;
+        }
+
+        .postit.blue {
+            background: #2196f3;
+            color: white;
+        }
+
+        .postit.green {
+            background: #4caf50;
+            color: white;
+        }
+
+        .postit.pink {
+            background: #e91e63;
+            color: white;
+        }
+
+        .postit-author {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .postit-actions {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            display: none;
+            gap: 3px;
+        }
+
+        .postit:hover .postit-actions {
+            display: flex;
+        }
+
+        .postit-btn {
+            width: 20px;
+            height: 20px;
+            border: none;
+            border-radius: 3px;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .postit-edit-btn {
+            background: #007bff;
+            color: white;
+        }
+
+        .postit-delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .postit-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* 편집 모드 스타일 */
+        .postit-editing {
+            border: 2px solid #007bff !important;
+        }
+
+        .postit-edit-textarea {
+            width: 100%;
+            height: 300px;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            resize: none;
+            outline: none;
+        }
+
+        .postit-edit-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            justify-content: flex-end;
+        }
+
+        .postit-save-btn {
+            padding: 3px 8px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .postit-cancel-btn {
+            padding: 3px 8px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        /* 로딩 스피너 */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .status-section {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .chat-section {
+                height: 300px;
+            }
+
+            .discussion-layout {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            #discussionContent {
+                order: 1;
+            }
+        }
+
+        /* 애니메이션 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.8); }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 헤더 -->
+        <div class="header">
+            <div>
+                <h1>학급 토론 참여</h1>
+                <p class="header-subtitle">실시간 토론에 참여해보세요</p>
+            </div>
+            <div class="header-buttons">
+                <button class="btn btn-primary" onclick="leaveDiscussion()" id="backToRoomListBtn" style="display: none;">← 토론방 목록</button>
+                <button class="btn btn-secondary" onclick="goBack()" id="backToLoginBtn" style="display: none;">← 처음으로 돌아가기</button>
+                <button class="btn btn-info" onclick="refreshRooms()">🔄 새로고침</button>
+                <button class="btn btn-secondary" onclick="exitDiscussion()">🚪 나가기</button>
+            </div>
+        </div>
+
+        <!-- 상태 영역 -->
+        <div class="status-section" id="statusSection" style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+            <div class="discussion-title-box">
+                <div class="discussion-title" id="discussionTitle">토론방을 선택해주세요</div>
+            </div>
+            <div class="discussion-stats" id="discussionStats">⏰ - | 👥 -</div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="content-section" id="mainContent">
+            
+            <!-- 1. 초기 입력 화면 -->
+            <div id="loginScreen" class="fade-in">
+                <h2 style="text-align: center; margin-bottom: 20px; color: #495057;">🎓 토론 참여하기</h2>
+                
+                <div class="form-group">
+                    <label for="nameInput">👨‍🎓 참여자 이름</label>
+                    <input type="text" id="nameInput" placeholder="김민수" maxlength="10">
+                </div>
+
+                <div class="form-group">
+                    <label for="classCodeInput">🔢 반 코드</label>
+                    <input type="text" id="classCodeInput" placeholder="ABC123" maxlength="10" style="text-transform: uppercase;">
+                </div>
+
+                <div style="text-align: center; margin-top: 25px;">
+                    <button class="btn btn-success" onclick="joinClass()" style="font-size: 16px; padding: 12px 24px;">
+                        🚀 토론 참여하기
+                    </button>
+                </div>
+
+                <div style="background: #d1ecf1; padding: 15px; border-radius: 6px; margin-top: 20px; border-left: 3px solid #bee5eb;">
+                    <p style="margin: 0; font-size: 13px; color: #0c5460;">
+                        <strong>💡 안내:</strong> 교사가 제공한 반 코드를 입력하면 해당 학급의 활성 토론방 목록을 확인할 수 있습니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2. 토론방 목록 화면 -->
+            <div id="roomListScreen" style="display: none;">
+                <!-- 제목과 체크박스가 있는 상단 헤더 -->
+                <div style="display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 20px;">
+                    <h2 style="margin: 0; color: #495057;">
+                        📚 <span id="className">-</span> - 토론방 목록
+                    </h2>
+                    
+                    <!-- 우측 정렬된 체크박스 -->
+                    <div style="position: absolute; right: 0;">
+                        <label style="font-size: 14px; color: #6c757d; cursor: pointer;">
+                            <input type="checkbox" id="showClosedRoomsCheckbox" onchange="toggleClosedRooms()" style="margin-right: 8px;">
+                            종료된 토론방 보기
+                        </label>
+                    </div>
+                </div>
+
+                <div id="roomsList" class="room-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        토론방 목록을 불러오는 중...
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 3. 실시간 토론 화면 -->
+            <div id="discussionScreen" style="display: none;">
+
+                <!-- 사이드바와 토론 영역 -->
+                <div class="discussion-layout">
+                    <!-- 좌측 사이드바 -->
+                    <div class="sidebar">
+                        <!-- 1. 학생 정보 -->
+                        <div class="sidebar-section">
+                            <div class="sidebar-title">👨‍🎓 참여자 정보</div>
+                            <div class="student-profile">
+                                <div class="student-avatar" id="studentAvatar">김</div>
+                                <div>
+                                    <div style="font-weight: bold; color: #495057;" id="sidebarStudentName">김민수</div>
+                                    <div style="font-size: 11px; color: #6c757d;">학생</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- 3. 교사 메시지 -->
+                        <div class="sidebar-section">
+                            <div class="sidebar-title">💬 교사 메시지</div>
+                            <div class="teacher-messages" id="teacherMessagesBox">
+                                <div style="text-align: center; color: #6c757d; padding: 15px; font-size: 12px;" ondblclick="showTeacherMessagesModal()" title="더블클릭하여 메시지 이력 보기">
+                                    📢 교사 메시지를 기다리고 있습니다<br>
+                                    <small style="font-size: 10px; color: #007bff;">더블클릭으로 이전 메시지 확인</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. 다른 대화 목록 -->
+                        <div class="sidebar-section">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                <div class="sidebar-title" style="margin: 0;">📋 다른 토론방</div>
+                                <label style="display: flex; align-items: center; gap: 3px; font-size: 9px; color: #6c757d; cursor: pointer;">
+                                    <input type="checkbox" id="showClosedRoomsSidebarCheckbox" onchange="toggleClosedRoomsWithRefresh()" style="transform: scale(0.8);">
+                                    <span>종료</span>
+                                </label>
+                            </div>
+                            <div class="other-rooms" id="otherRoomsList">
+                                <div style="text-align: center; color: #6c757d; padding: 10px; font-size: 12px;">
+                                    다른 토론방이 없습니다
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 우측 토론 컨텐츠 영역 (타입에 따라 달라짐) -->
+                <div id="discussionContent">
+                    <!-- 자유 토론 UI (실시간 채팅) -->
+                    <div id="generalDiscussion" style="background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px;">
+                        <div class="chat-header" style="margin-bottom: 15px; font-size: 18px; font-weight: bold; color: #495057;">💬 자유 토론 채팅</div>
+                        
+                        <!-- 채팅 메시지 영역 -->
+                        <div id="chatMessages" style="height: 400px; background: #f8f9fa; border-radius: 8px; padding: 15px; overflow-y: auto; margin-bottom: 15px; border: 1px solid #dee2e6;">
+                            <div style="text-align: center; color: #6c757d; padding: 40px; font-size: 16px;" id="chatWelcome">
+                                💬 첫 번째 메시지를 보내보세요!
+                            </div>
+                        </div>
+
+                        <!-- 답장 미리보기 -->
+                        <div id="replyPreview" style="display: none; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 14px; font-weight: bold; color: #495057;">↩️ 답장 중</span>
+                                <button onclick="cancelReply()" style="background: none; border: none; cursor: pointer; color: #6c757d; font-size: 16px; margin-left: auto;" title="답장 취소">✕</button>
+                            </div>
+                            <div id="replyContent" style="background: white; border-left: 3px solid #007bff; padding: 8px; border-radius: 4px; font-size: 13px; color: #6c757d;">
+                                <!-- 답장 대상 메시지가 여기에 표시됩니다 -->
+                            </div>
+                        </div>
+
+                        <!-- 채팅 입력 영역 -->
+                        <div class="chat-input" style="display: flex; gap: 15px; position: relative; align-items: center;">
+                            <input type="text" id="chatInput" placeholder="메시지를 입력하세요..." onkeypress="handleChatEnter(event)" 
+                                style="flex: 1; padding: 12px 80px 12px 15px; border: 2px solid #e9ecef; border-radius: 25px; font-size: 16px; margin-right: 10px;">
+                            <button onclick="toggleEmojiPicker()" class="emoji-btn" style="position: absolute; right: 95px; top: 50%; transform: translateY(-50%); background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 50%; font-size: 18px; cursor: pointer; padding: 8px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;" title="이모지 선택">
+                                😊
+                            </button>
+                            <button onclick="sendChatMessage()" class="btn btn-primary" style="padding: 12px 20px; border-radius: 25px; margin-left: 5px;">
+                                📤 전송
+                            </button>
+                        </div>
+
+                        <!-- 이모지 피커 -->
+                        <div id="emojiPicker" class="emoji-picker" style="display: none;">
+                            <div class="emoji-categories">
+                                <button class="emoji-category active" onclick="showEmojiCategory('face')" data-category="face">😊</button>
+                                <button class="emoji-category" onclick="showEmojiCategory('gesture')" data-category="gesture">👍</button>
+                                <button class="emoji-category" onclick="showEmojiCategory('heart')" data-category="heart">❤️</button>
+                                <button class="emoji-category" onclick="showEmojiCategory('nature')" data-category="nature">🌸</button>
+                                <button class="emoji-category" onclick="showEmojiCategory('food')" data-category="food">🍎</button>
+                                <button class="emoji-category" onclick="showEmojiCategory('activity')" data-category="activity">⚽</button>
+                            </div>
+                            <div class="emoji-grid" id="emojiGrid">
+                                <!-- 이모지들이 동적으로 추가됨 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 포스트잇 토론 UI -->
+                    <div id="postitDiscussion" style="display: none; background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px;">
+                        <div class="chat-header" style="margin-bottom: 15px; font-size: 18px; font-weight: bold; color: #495057;">📝 포스트잇 의견 보드</div>
+                        
+                        <!-- 포스트잇 입력 영역 -->
+                        <div class="chat-input" style="margin-bottom: 20px;">
+                            <input type="text" id="postitInput" placeholder="의견을 적어주세요..." onkeypress="handlePostitEnter(event)" 
+                                style="flex: 1; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 25px; font-size: 16px;">
+                            <button onclick="addPostit()" class="btn btn-primary" style="margin-left: 10px; padding: 12px 20px; border-radius: 25px;">
+                                📌 붙이기
+                            </button>
+                        </div>
+
+                        <!-- 포스트잇 보드 (더 넓은 공간) -->
+                        <div class="postit-board" id="postitBoard" style="min-height: 400px; background: #f8f9fa; border-radius: 8px; padding: 20px;">
+                            <div style="text-align: center; color: #6c757d; padding: 40px; font-size: 16px;">
+                                💭 첫 번째 의견을 남겨보세요!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 찬반 토론 UI -->
+                    <div id="debateDiscussion" style="display: none;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <!-- 찬성 의견 -->
+                            <div style="background: #d4edda; border: 2px solid #28a745; border-radius: 8px; padding: 15px;">
+                                <h5 style="color: #155724; margin: 0 0 10px 0;">✅ 찬성 의견</h5>
+                                <div id="agreeSection" style="min-height: 300px;">
+                                    <textarea id="agreeInput" placeholder="찬성 의견을 입력하세요..." 
+                                        style="width: 100%; height: 60px; margin-bottom: 8px; padding: 8px; border: 1px solid #c3e6cb; border-radius: 4px;"></textarea>
+                                    <button class="btn btn-success" onclick="submitDebateVote('agree')" style="width: 100%; margin-bottom: 10px;">
+                                        ✅ 찬성 의견 등록
+                                    </button>
+                                    <div id="agreeList">
+                                        로딩 중...
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 반대 의견 -->
+                            <div style="background: #f8d7da; border: 2px solid #dc3545; border-radius: 8px; padding: 15px;">
+                                <h5 style="color: #721c24; margin: 0 0 10px 0;">❌ 반대 의견</h5>
+                                <div id="disagreeSection" style="min-height: 300px;">
+                                    <textarea id="disagreeInput" placeholder="반대 의견을 입력하세요..." 
+                                        style="width: 100%; height: 60px; margin-bottom: 8px; padding: 8px; border: 1px solid #f5c6cb; border-radius: 4px;"></textarea>
+                                    <button class="btn" onclick="submitDebateVote('disagree')" 
+                                        style="width: 100%; margin-bottom: 10px; background: #dc3545; color: white;">
+                                        ❌ 반대 의견 등록
+                                    </button>
+                                    <div id="disagreeList">
+                                        로딩 중...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 실시간 결과 -->
+                        <div style="margin-top: 15px; background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px;">
+                            <h6 style="margin: 0 0 10px 0; color: #495057;">📊 실시간 결과</h6>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div style="flex: 1; background: #d4edda; height: 20px; border-radius: 10px; position: relative;">
+                                    <div id="agreeBar" style="background: #28a745; height: 100%; border-radius: 10px; width: 0%; transition: width 0.5s;"></div>
+                                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 11px; font-weight: bold;">
+                                        찬성 <span id="agreeCount">0</span>
+                                    </span>
+                                </div>
+                                <div style="flex: 1; background: #f8d7da; height: 20px; border-radius: 10px; position: relative;">
+                                    <div id="disagreeBar" style="background: #dc3545; height: 100%; border-radius: 10px; width: 0%; transition: width 0.5s;"></div>
+                                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 11px; font-weight: bold;">
+                                        반대 <span id="disagreeCount">0</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수
+        let currentStudent = null;
+        let currentClassCode = null;
+        let currentClassName = null;
+        let currentTopicId = null;
+        let currentTopicData = null;
+        let currentRooms = [];
+        let database = null;
+        let tipsIndex = 0;
+        
+        // 학생 게시글 허용 여부 확인
+        function isStudentPostAllowed() {
+            if (!currentTopicData || !currentTopicData.settings) {
+                return true; // 기본값: 허용
+            }
+            return currentTopicData.settings.allowStudentPost !== false;
+        }
+        
+        // 입력 필드 활성화/비활성화
+        function updateInputFieldsState() {
+            const allowed = isStudentPostAllowed();
+            
+            // 포스트잇 입력 필드
+            const postitInput = document.getElementById('postitInput');
+            if (postitInput) {
+                postitInput.disabled = !allowed;
+                postitInput.placeholder = allowed ? '의견을 적어주세요...' : '교사가 학생 게시글을 제한중입니다';
+                postitInput.style.backgroundColor = allowed ? '' : '#f8f9fa';
+                postitInput.style.color = allowed ? '' : '#6c757d';
+            }
+            
+            // 찬반 토론 입력 필드들
+            const agreeInput = document.getElementById('agreeInput');
+            const disagreeInput = document.getElementById('disagreeInput');
+            
+            [agreeInput, disagreeInput].forEach(input => {
+                if (input) {
+                    input.disabled = !allowed;
+                    input.placeholder = allowed ? 
+                        (input.id === 'agreeInput' ? '찬성 의견을 입력하세요...' : '반대 의견을 입력하세요...') :
+                        '교사가 학생 의견 작성을 제한중입니다';
+                    input.style.backgroundColor = allowed ? '' : '#f8f9fa';
+                    input.style.color = allowed ? '' : '#6c757d';
+                }
+            });
+            
+            // 버튼들도 비활성화
+            const buttons = [
+                document.querySelector('button[onclick="addPostit()"]'),
+                document.querySelector('button[onclick="submitDebateVote(\'agree\')"]'),
+                document.querySelector('button[onclick="submitDebateVote(\'disagree\')"]')
+            ];
+            
+            buttons.forEach(btn => {
+                if (btn) {
+                    btn.disabled = !allowed;
+                    btn.style.opacity = allowed ? '1' : '0.5';
+                    btn.style.cursor = allowed ? 'pointer' : 'not-allowed';
+                }
+            });
+        }
+        
+        const tips = [
+            "💡 구체적인 예시를 들어 의견을 표현해보세요",
+            "🤔 다른 친구들의 의견도 존중해주세요",
+            "✨ 창의적인 아이디어를 자유롭게 나누어보세요",
+            "🎯 주제에 맞는 의견을 작성해주세요",
+            "👥 협력하여 더 나은 결론을 찾아보세요"
+        ];
+
+        // URL 파라미터에서 Firebase 설정 가져오기
+        function getFirebaseConfigFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const apiKey = urlParams.get('api');
+            const projectId = urlParams.get('project');
+            
+            if (apiKey && projectId) {
+                // localStorage에 저장
+                localStorage.setItem('user_firebase_apiKey', decodeURIComponent(apiKey));
+                localStorage.setItem('user_firebase_projectId', decodeURIComponent(projectId));
+                localStorage.setItem('user_firebase_databaseURL', `https://${decodeURIComponent(projectId)}-default-rtdb.asia-southeast1.firebasedatabase.app`);
+                
+                return {
+                    apiKey: decodeURIComponent(apiKey),
+                    authDomain: `${decodeURIComponent(projectId)}.firebaseapp.com`,
+                    databaseURL: `https://${decodeURIComponent(projectId)}-default-rtdb.asia-southeast1.firebasedatabase.app`,
+                    projectId: decodeURIComponent(projectId),
+                    storageBucket: `${decodeURIComponent(projectId)}.appspot.com`
+                };
+            }
+            return null;
+        }
+
+        // 사용자 Firebase 설정 불러오기
+        function loadUserFirebaseConfig() {
+            // 먼저 URL 파라미터 확인
+            const urlConfig = getFirebaseConfigFromUrl();
+            if (urlConfig) {
+                return urlConfig;
+            }
+            
+            // localStorage에서 확인
+            const apiKey = localStorage.getItem('user_firebase_apiKey');
+            const projectId = localStorage.getItem('user_firebase_projectId');
+            
+            if (apiKey && projectId) {
+                return {
+                    apiKey: apiKey,
+                    authDomain: `${projectId}.firebaseapp.com`,
+                    databaseURL: `https://${projectId}-default-rtdb.asia-southeast1.firebasedatabase.app`,
+                    projectId: projectId,
+                    storageBucket: `${projectId}.appspot.com`
+                };
+            }
+            return null;
+        }
+
+        // Firebase 설정 가져오기
+        function getFirebaseConfig() {
+            const userConfig = loadUserFirebaseConfig();
+            if (userConfig) {
+                return userConfig;
+            } else {
+                // Firebase 설정이 없으면 오류 표시
+                showError('Firebase 설정이 필요합니다. 교사에게 올바른 링크를 요청하세요.');
+                throw new Error('Firebase 설정이 필요합니다.');
+            }
+        }
+
+        // Firebase SDK 로드
+        async function loadFirebase() {
+            if (typeof firebase !== 'undefined') {
+                return true;
+            }
+
+            try {
+                // Firebase 스크립트 로드
+                await loadScript('https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js');
+                await loadScript('https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js');
+                
+                // Firebase 초기화
+                const config = getFirebaseConfig();
+                const app = firebase.initializeApp(config, 'studentApp-' + Date.now());
+                database = app.database();
+                
+                console.log('Firebase 초기화 완료');
+                return true;
+            } catch (error) {
+                console.error('Firebase 로드 실패:', error);
+                alert('Firebase 연결에 실패했습니다. 교사에게 문의해주세요.');
+                return false;
+            }
+        }
+
+        // 스크립트 로드 함수
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // 반 참가
+        async function joinClass() {
+            const name = document.getElementById('nameInput').value.trim();
+            const classCode = document.getElementById('classCodeInput').value.trim().toUpperCase();
+
+            if (!name || !classCode) {
+                alert('이름과 반 코드를 모두 입력해주세요.');
+                return;
+            }
+
+            if (!await loadFirebase()) {
+                return;
+            }
+
+            try {
+                console.log('반 참가 시도:', { name, classCode });
+                
+                // 반 코드로 반 정보 찾기 (교사용과 동일한 구조 사용)
+                const classSnapshot = await database.ref(`classes/${classCode}`).once('value');
+                const classData = classSnapshot.val();
+                
+                console.log('반 데이터 조회 결과:', classData);
+
+                if (!classData) {
+                    alert('존재하지 않는 반 코드입니다. 교사에게 정확한 코드를 확인해주세요.');
+                    return;
+                }
+
+                // 학생 정보를 반에 등록
+                await database.ref(`classes/${classCode}/students/${name}`).set({
+                    name: name,
+                    joinedAt: Date.now(),
+                    status: 'active'
+                });
+
+                // 학생 정보 설정
+                currentStudent = name;
+                currentClassCode = classCode; // 반 코드를 그대로 사용
+                currentClassName = classData.className || classData.name;
+
+                console.log('설정된 정보:', { currentStudent, currentClassCode, currentClassName });
+
+                // UI 업데이트
+                document.getElementById('className').textContent = classData.className || classData.name;
+
+                // 화면 전환
+                switchScreen('roomListScreen');
+                
+                // 처음으로 돌아가기 버튼 표시
+                const backToLoginBtn = document.getElementById('backToLoginBtn');
+                if (backToLoginBtn) {
+                    backToLoginBtn.style.display = 'inline-block';
+                }
+                
+                // 토론방 목록 로드
+                await loadRooms(classCode);
+
+            } catch (error) {
+                console.error('반 참가 오류:', error);
+                alert('반 참가에 실패했습니다: ' + error.message);
+            }
+        }
+
+        // 토론방 목록 로드
+        async function loadRooms(classId) {
+            try {
+                console.log('토론방 로드 시작:', classId);
+                
+                // 교사용과 동일한 경로로 토론 주제 조회
+                const roomsSnapshot = await database.ref(`classes/${classId}/discussions`).once('value');
+                const roomsData = roomsSnapshot.val() || {};
+                
+                console.log('토론방 데이터 (classes 경로):', roomsData);
+
+                currentRooms = Object.keys(roomsData).map(id => {
+                    const room = { id: id, ...roomsData[id] };
+                    // 토론 시간 종료 체크 및 상태 업데이트
+                    updateRoomStatus(room);
+                    return room;
+                });
+
+                console.log('변환된 토론방 목록:', currentRooms);
+                
+                displayRooms();
+
+                // 실시간 업데이트 설정 - 교사용과 동일한 경로 사용
+                database.ref(`classes/${classId}/discussions`).on('value', (snapshot) => {
+                    const data = snapshot.val() || {};
+                    console.log('실시간 업데이트 데이터:', data);
+                    currentRooms = Object.keys(data).map(id => {
+                        const room = { id: id, ...data[id] };
+                        // 토론 시간 종료 체크 및 상태 업데이트
+                        updateRoomStatus(room);
+                        return room;
+                    });
+                    displayRooms();
+                });
+
+            } catch (error) {
+                console.error('토론방 로드 오류:', error);
+                document.getElementById('roomsList').innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #dc3545;">
+                        ❌ 토론방 목록을 불러올 수 없습니다.<br>
+                        <small>${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+
+        // 토론방 목록 표시
+        function displayRooms() {
+            const roomsList = document.getElementById('roomsList');
+            
+            if (currentRooms.length === 0) {
+                roomsList.innerHTML = `
+                    <div style="text-align: center; padding: 30px; color: #6c757d;">
+                        📭 아직 진행 중인 토론이 없습니다.<br>
+                        <small>교사가 토론을 시작할 때까지 기다려주세요.</small>
+                    </div>
+                `;
+                return;
+            }
+
+            // 체크박스 상태 확인
+            const showClosedCheckbox = document.getElementById('showClosedRoomsCheckbox');
+            const showClosed = showClosedCheckbox ? showClosedCheckbox.checked : false;
+            
+            // 필터링된 토론방 목록
+            let filteredRooms = currentRooms.filter(room => {
+                const status = room.status || 'active';
+                if (showClosed) {
+                    return true; // 모든 방 표시
+                } else {
+                    return status === 'active' || status === 'waiting'; // 진행중/대기중만 표시
+                }
+            });
+
+            // 최신 생성순으로 정렬 (createdAt 기준 내림차순)
+            filteredRooms.sort((a, b) => {
+                const timeA = a.createdAt || 0;
+                const timeB = b.createdAt || 0;
+                return timeB - timeA;
+            });
+
+            if (filteredRooms.length === 0) {
+                roomsList.innerHTML = `
+                    <div style="text-align: center; padding: 30px; color: #6c757d;">
+                        📭 표시할 토론방이 없습니다.<br>
+                        <small>${showClosed ? '토론방이 없습니다.' : '진행 중인 토론이 없습니다. "종료된 토론방 보기"를 체크하면 모든 토론방을 볼 수 있습니다.'}</small>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filteredRooms.forEach(room => {
+                const status = room.status || 'active';
+                const participants = room.participants || {};
+                const participantCount = Object.keys(participants).length;
+                
+                // 토론 형태를 한글로 변환
+                const typeNames = {
+                    'debate': '찬반 토론',
+                    'discussion': '자유 토론',
+                    'postit': '포스트잇 토론',
+                    'survey': '설문 조사',
+                    'general': '자유 토론'
+                };
+                const roomType = typeNames[room.type] || '자유 토론';
+                
+                let statusClass = 'active';
+                let statusText = '진행중';
+                let statusStyle = 'status-active';
+                
+                if (status === 'waiting') {
+                    statusClass = 'waiting';
+                    statusText = '대기중';
+                    statusStyle = 'status-waiting';
+                } else if (status === 'closed') {
+                    statusClass = 'closed';
+                    statusText = '종료됨';
+                    statusStyle = 'status-closed';
+                }
+
+                const clickAction = status === 'active' ? 
+                    `onclick="joinRoom('${room.id}', '${room.title}', '${status}')"` : 
+                    `onclick="viewRoomHistory('${room.id}', '${room.title}')"`;
+                
+                html += `
+                    <div class="room-item ${statusClass}" ${clickAction}>
+                        <div class="room-header">
+                            <div class="room-title">💬 ${room.title}</div>
+                            <div class="room-status ${statusStyle}">${statusText}</div>
+                        </div>
+                        <div class="room-info">
+                            <span>👥 ${participantCount}명 참여</span>
+                            <span>⏰ ${room.duration || 30}분</span>
+                            <span>📁 ${roomType}</span>
+                        </div>
+                        ${room.description ? `<div style="margin-top: 8px; font-size: 12px; color: #6c757d;">${room.description}</div>` : ''}
+                        ${status !== 'active' ? `<div style="text-align: center; margin-top: 8px; font-size: 11px; color: #6c757d;">클릭하여 토론 결과 보기</div>` : ''}
+                    </div>
+                `;
+            });
+
+            roomsList.innerHTML = html;
+        }
+
+        // 토론방 참가
+        async function joinRoom(roomId, roomTitle, status) {
+            if (status === 'closed') {
+                alert('종료된 토론입니다.');
+                return;
+            }
+
+            if (status === 'waiting') {
+                alert('아직 시작되지 않은 토론입니다. 잠시 후 다시 시도해주세요.');
+                return;
+            }
+
+            try {
+                currentTopicId = roomId;
+                
+                // 토론 데이터 가져오기
+                const topicSnapshot = await database.ref(`classes/${currentClassCode}/discussions/${roomId}`).once('value');
+                currentTopicData = topicSnapshot.val();
+                
+                console.log('토론 데이터:', currentTopicData);
+                
+                // 교사용과 동일한 경로로 참여자 등록
+                const participantData = {
+                    name: currentStudent,
+                    role: 'student',
+                    isAnonymous: false,
+                    joinedAt: Date.now(),
+                    lastActive: Date.now()
+                };
+                
+                await database.ref(`classes/${currentClassCode}/discussions/${roomId}/participants/${currentStudent}`).set(participantData);
+                
+                // 참여자 수 증가
+                await database.ref(`classes/${currentClassCode}/discussions/${roomId}/participantCount`).transaction(count => {
+                    return (count || 0) + 1;
+                });
+
+                console.log('참여자 등록 완료:', currentStudent, roomId);
+
+                // UI 업데이트
+                const discussionTitleEl = document.getElementById('discussionTitle');
+                if (discussionTitleEl) {
+                    discussionTitleEl.textContent = roomTitle;
+                }
+                
+                // 사이드바 업데이트
+                updateSidebar();
+                
+                // 토론 타입에 따라 UI 설정
+                setupDiscussionUI();
+                
+                // 화면 전환
+                switchScreen('discussionScreen');
+                
+                // 상태 패널 표시
+                document.getElementById('statusSection').style.display = 'flex';
+                
+                // 토론방 목록 버튼 표시
+                const backToRoomListBtn = document.getElementById('backToRoomListBtn');
+                if (backToRoomListBtn) {
+                    backToRoomListBtn.style.display = 'inline-block';
+                }
+                
+                // 실시간 데이터 리스너 설정
+                setupRealtimeListeners();
+                
+                // 입력 필드 초기 상태 설정
+                setTimeout(() => {
+                    updateInputFieldsState();
+                }, 500);
+
+            } catch (error) {
+                console.error('토론방 참가 오류:', error);
+                alert('토론방 참가에 실패했습니다: ' + error.message);
+            }
+        }
+
+        // 토론 UI 설정
+        function setupDiscussionUI() {
+            const debateDiscussion = document.getElementById('debateDiscussion');
+            const generalDiscussion = document.getElementById('generalDiscussion');
+            const postitDiscussion = document.getElementById('postitDiscussion');
+            
+            // 모든 UI 숨기기
+            debateDiscussion.style.display = 'none';
+            generalDiscussion.style.display = 'none';
+            postitDiscussion.style.display = 'none';
+            
+            if (currentTopicData && currentTopicData.type === 'debate') {
+                // 찬반 토론 UI 표시
+                debateDiscussion.style.display = 'block';
+                console.log('찬반 토론 UI로 전환');
+            } else if (currentTopicData && currentTopicData.type === 'postit') {
+                // 포스트잇 토론 UI 표시
+                postitDiscussion.style.display = 'block';
+                console.log('포스트잇 토론 UI로 전환');
+                
+                // 포스트잇 보드 초기화
+                initializePostitBoard();
+            } else {
+                // 자유 토론 UI 표시 (기본 - 실시간 채팅)
+                generalDiscussion.style.display = 'block';
+                console.log('자유 토론(채팅) UI로 전환');
+                
+                // 채팅 초기화
+                initializeChatArea();
+            }
+        }
+
+        // 실시간 리스너 설정
+        function setupRealtimeListeners() {
+            console.log('🎯 실시간 리스너 설정 시작:', currentTopicId);
+            
+            // 기존 리스너들 명시적으로 제거
+            cleanupListeners();
+            
+            console.log('🎯 새로운 리스너 설정 - 토론방:', currentTopicId);
+            
+            // 현재 토론방의 리스너만 설정
+            
+            // 토론 설정 변경 리스너 추가
+            database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/settings`).on('value', (snapshot) => {
+                if (snapshot.exists() && currentTopicData) {
+                    currentTopicData.settings = snapshot.val();
+                    updateInputFieldsState(); // 입력 필드 상태 업데이트
+                }
+            });
+            
+            if (currentTopicData && currentTopicData.type === 'debate') {
+                // 찬반 토론용 리스너
+                setupDebateListeners();
+            } else if (currentTopicData && currentTopicData.type === 'postit') {
+                // 포스트잇 토론용 리스너
+                setupPostitListeners();
+            } else {
+                // 자유 토론용 리스너 (실시간 채팅)
+                setupChatListeners();
+            }
+
+            // 공통 참여자 수 업데이트
+            database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/participants`).on('value', (snapshot) => {
+                const participants = snapshot.val() || {};
+                const count = Object.keys(participants).length;
+                console.log('참여자 업데이트:', count);
+                const discussionStatsEl = document.getElementById('discussionStats');
+                if (discussionStatsEl) {
+                    updateDiscussionStats(count);
+                }
+                
+                // 사이드바 참여자 수 업데이트
+                const participantCountEl = document.getElementById('participantCount');
+                if (participantCountEl) {
+                    participantCountEl.textContent = `👥 ${count}명 참여`;
+                }
+            });
+            
+            // 교사 메시지 리스너 추가
+            const teacherMessagesRef = database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/teacherMessages`);
+            console.log('📢 교사 메시지 리스너 설정:', `classes/${currentClassCode}/discussions/${currentTopicId}/teacherMessages`);
+            
+            const teacherMessageListener = (snapshot) => {
+                const teacherMessage = snapshot.val();
+                console.log('새 교사 메시지 수신 (전체 데이터):', teacherMessage);
+                console.log('새 교사 메시지 수신:', {
+                    currentTopicId: currentTopicId,
+                    messageTopicId: teacherMessage.topicId,
+                    message: teacherMessage.message,
+                    timestamp: teacherMessage.timestamp
+                });
+                
+                // 메시지가 현재 토론방용인지 확인
+                if (teacherMessage.topicId && teacherMessage.topicId !== currentTopicId) {
+                    console.log('❌ 다른 토론방 메시지 무시:', teacherMessage.topicId, 'vs', currentTopicId);
+                    return;
+                }
+                
+                console.log('✅ 메시지 표시:', teacherMessage.message);
+                displayTeacherMessage(teacherMessage);
+            };
+            
+            // 리스너 등록 및 추적
+            teacherMessagesRef.on('child_added', teacherMessageListener);
+            activeListeners.teacherMessages = {
+                ref: teacherMessagesRef,
+                event: 'child_added',
+                listener: teacherMessageListener
+            };
+            
+            // 기존 교사 메시지들 로드
+            database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/teacherMessages`).once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const messages = snapshot.val();
+                    // 기존 메시지들을 시간순으로 정렬해서 로테이션에 추가
+                    Object.values(messages)
+                        .sort((a, b) => a.timestamp - b.timestamp)
+                        .forEach(message => {
+                            // 메시지가 현재 토론방용인지 확인
+                            if (message.topicId && message.topicId !== currentTopicId) {
+                                console.log('기존 메시지 - 다른 토론방 메시지 무시:', message.topicId, 'vs', currentTopicId);
+                                return;
+                            }
+                            
+                            if (!teacherMessages.some(tm => tm.timestamp === message.timestamp)) {
+                                displayTeacherMessage(message);
+                            }
+                        });
+                }
+            });
+        }
+
+        // 리스너 정리 함수
+        function cleanupListeners() {
+            console.log('🧹 기존 리스너들 정리 시작');
+            
+            // 추적된 리스너들 제거
+            Object.keys(activeListeners).forEach(key => {
+                const listenerInfo = activeListeners[key];
+                if (listenerInfo && listenerInfo.ref) {
+                    console.log(`🗑️ ${key} 리스너 제거`);
+                    listenerInfo.ref.off(listenerInfo.event, listenerInfo.listener);
+                    activeListeners[key] = null;
+                }
+            });
+            
+            // 추가 안전장치: 전체 discussions 경로 리스너 제거
+            database.ref('discussions').off();
+            console.log('🧹 전체 discussions 리스너 제거 완료');
+        }
+
+        // 포스트잇 토론 리스너
+        function setupPostitListeners() {
+            const messagesRef = database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/messages`);
+            
+            // 🔧 기존 리스너 제거 (중복 방지)
+            messagesRef.off();
+            console.log('🧹 포스트잇 리스너 기존 등록 해제');
+            
+            const joinTime = Date.now(); // 참여 시점 기록
+            
+            // 기존 포스트잇들을 한번에 로드
+            messagesRef.once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const messages = snapshot.val();
+                    Object.values(messages)
+                        .filter(msg => msg.type === 'postit')
+                        .sort((a, b) => a.timestamp - b.timestamp)
+                        .forEach(message => {
+                            console.log('기존 포스트잇 로드:', message);
+                            addPostitToBoard(message);
+                        });
+                }
+            });
+            
+            // 새로운 포스트잇만 실시간으로 추가 (참여 시점 이후)
+            messagesRef.on('child_added', (snapshot) => {
+                const message = snapshot.val();
+                
+                // 포스트잇이고 참여 시점 이후에 작성된 것만 처리
+                if (message.type === 'postit' && message.timestamp > joinTime) {
+                    console.log('새 포스트잇 실시간 추가:', message);
+                    addPostitToBoard(message);
+                }
+            });
+            
+            console.log('🎯 포스트잇 리스너 새로 설정 완료');
+        }
+
+        // 자유 토론 리스너 (실시간 채팅)
+        function setupChatListeners() {
+            const messagesRef = database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/messages`);
+            
+            // 🔧 기존 리스너 제거 (중복 방지)
+            messagesRef.off();
+            console.log('🧹 채팅 리스너 기존 등록 해제');
+            
+            const joinTime = Date.now(); // 참여 시점 기록
+            
+            // 기존 채팅 메시지들을 한번에 로드
+            messagesRef.once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const messages = snapshot.val();
+                    Object.values(messages)
+                        .filter(msg => msg.type === 'chat')
+                        .sort((a, b) => a.timestamp - b.timestamp)
+                        .forEach(message => {
+                            console.log('기존 채팅 메시지 로드:', message);
+                            addChatMessage(message);
+                        });
+                }
+            });
+            
+            // 실시간 새 메시지 리스너
+            messagesRef.on('child_added', (snapshot) => {
+                const message = snapshot.val();
+                
+                // 채팅 메시지이고 참여 시점 이후에 작성된 것만 처리
+                if (message.type === 'chat' && message.timestamp > joinTime) {
+                    console.log('새 채팅 메시지 실시간 추가:', message);
+                    addChatMessage(message);
+                }
+            });
+        }
+
+        // 찬반 토론 리스너
+        function setupDebateListeners() {
+            const votesRef = database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/votes`);
+            
+            // 🔧 기존 리스너 제거 (중복 방지)
+            votesRef.off();
+            console.log('🧹 찬반토론 리스너 기존 등록 해제');
+            
+            // 투표 리스너
+            votesRef.on('value', (snapshot) => {
+                const votes = snapshot.val() || {};
+                console.log('투표 업데이트:', votes);
+                updateDebateResults(votes);
+                updateDebateOpinions(votes);
+            });
+        }
+
+
+        // 포스트잇 추가
+        async function addPostit() {
+            // 학생 게시글 허용 여부 확인
+            if (!isStudentPostAllowed()) {
+                alert('📝 현재 교사가 학생 게시글을 제한하고 있습니다.\n잠시 후 다시 시도해주세요.');
+                return;
+            }
+            
+            const input = document.getElementById('postitInput');
+            const content = input.value.trim();
+            
+            if (!content) return;
+
+            try {
+                const colors = ['yellow', 'blue', 'green', 'pink'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+
+                // 메시지 ID 생성
+                const messageRef = database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/messages`).push();
+                const messageId = messageRef.key;
+
+                // 포스트잇도 메시지 형태로 저장 (type으로 구분)
+                await messageRef.set({
+                    participantId: currentStudent,
+                    participantName: currentStudent,
+                    content: content,
+                    type: 'postit',
+                    color: color,
+                    isAnonymous: false,
+                    timestamp: Date.now(),
+                    messageId: messageId
+                });
+
+                console.log('포스트잇 전송 완료:', content);
+                input.value = '';
+            } catch (error) {
+                console.error('포스트잇 추가 오류:', error);
+                alert('포스트잇 추가에 실패했습니다.');
+            }
+        }
+
+        // 찬반 토론 투표 제출
+        async function submitDebateVote(position) {
+            // 학생 게시글 허용 여부 확인
+            if (!isStudentPostAllowed()) {
+                alert('📝 현재 교사가 학생 의견 작성을 제한하고 있습니다.\n잠시 후 다시 시도해주세요.');
+                return;
+            }
+            
+            const inputId = position === 'agree' ? 'agreeInput' : 'disagreeInput';
+            const inputEl = document.getElementById(inputId);
+            
+            if (!inputEl) {
+                console.error(`Input element not found: ${inputId}`);
+                return;
+            }
+            
+            const opinion = inputEl.value.trim();
+            
+            if (!opinion) {
+                alert('의견을 입력해주세요.');
+                return;
+            }
+            
+            try {
+                const voteData = {
+                    participantId: currentStudent,
+                    participantName: currentStudent,
+                    position: position,
+                    opinion: opinion,
+                    timestamp: Date.now()
+                };
+                
+                const voteId = `vote_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                
+                await database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/votes/${voteId}`).set(voteData);
+                
+                console.log('투표 제출 완료:', voteData);
+                inputEl.value = '';
+                alert(`${position === 'agree' ? '찬성' : '반대'} 의견이 등록되었습니다.`);
+                
+            } catch (error) {
+                console.error('투표 제출 오류:', error);
+                alert('투표 제출에 실패했습니다.');
+            }
+        }
+
+        // 찬반 토론 결과 업데이트
+        function updateDebateResults(votes) {
+            const agreeVotes = [];
+            const disagreeVotes = [];
+            
+            Object.values(votes).forEach(vote => {
+                if (vote.position === 'agree') {
+                    agreeVotes.push(vote);
+                } else if (vote.position === 'disagree') {
+                    disagreeVotes.push(vote);
+                }
+            });
+            
+            const agreeCount = agreeVotes.length;
+            const disagreeCount = disagreeVotes.length;
+            const total = agreeCount + disagreeCount;
+            
+            // 카운트 업데이트
+            const agreeCountEl = document.getElementById('agreeCount');
+            const disagreeCountEl = document.getElementById('disagreeCount');
+            if (agreeCountEl) agreeCountEl.textContent = agreeCount;
+            if (disagreeCountEl) disagreeCountEl.textContent = disagreeCount;
+            
+            // 프로그레스 바 업데이트
+            const agreeBar = document.getElementById('agreeBar');
+            const disagreeBar = document.getElementById('disagreeBar');
+            if (total > 0 && agreeBar && disagreeBar) {
+                const agreePercent = (agreeCount / total) * 100;
+                const disagreePercent = (disagreeCount / total) * 100;
+                
+                agreeBar.style.width = `${agreePercent}%`;
+                disagreeBar.style.width = `${disagreePercent}%`;
+            }
+            
+            console.log(`찬반토론 결과 업데이트: 찬성 ${agreeCount}, 반대 ${disagreeCount}`);
+        }
+
+        // 찬반 토론 의견 목록 업데이트
+        function updateDebateOpinions(votes) {
+            const agreeList = document.getElementById('agreeList');
+            const disagreeList = document.getElementById('disagreeList');
+            
+            if (!agreeList || !disagreeList) return;
+            
+            const agreeVotes = [];
+            const disagreeVotes = [];
+            
+            Object.keys(votes).forEach(voteId => {
+                const vote = votes[voteId];
+                vote.id = voteId; // ID 추가
+                if (vote.position === 'agree') {
+                    agreeVotes.push(vote);
+                } else if (vote.position === 'disagree') {
+                    disagreeVotes.push(vote);
+                }
+            });
+            
+            // 찬성 의견 목록
+            agreeList.innerHTML = agreeVotes.map(vote => {
+                const isMe = vote.participantId === currentStudent;
+                const timestamp = new Date(vote.timestamp).toLocaleTimeString();
+                const actionsHtml = isMe ? `
+                    <div style="margin-top: 5px;">
+                        <button onclick="editDebateVote('${vote.id}')" style="background: #007bff; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 10px; cursor: pointer; margin-right: 3px;">✏️ 수정</button>
+                        <button onclick="deleteDebateVote('${vote.id}')" style="background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 10px; cursor: pointer;">🗑️ 삭제</button>
+                    </div>
+                ` : '';
+                
+                return `
+                    <div style="background: ${isMe ? '#c3e6cb' : '#f8f9fa'}; padding: 8px; border-radius: 4px; margin-bottom: 5px; font-size: 12px;" data-vote-id="${vote.id}">
+                        <strong>${vote.participantName}</strong> (${timestamp})<br>
+                        <div class="vote-opinion">${vote.opinion}${vote.isEdited ? ' <small style="opacity: 0.6;">(수정됨)</small>' : ''}</div>
+                        ${actionsHtml}
+                    </div>
+                `;
+            }).join('') || '<div style="color: #6c757d; text-align: center; padding: 20px;">아직 찬성 의견이 없습니다.</div>';
+            
+            // 반대 의견 목록
+            disagreeList.innerHTML = disagreeVotes.map(vote => {
+                const isMe = vote.participantId === currentStudent;
+                const timestamp = new Date(vote.timestamp).toLocaleTimeString();
+                const actionsHtml = isMe ? `
+                    <div style="margin-top: 5px;">
+                        <button onclick="editDebateVote('${vote.id}')" style="background: #007bff; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 10px; cursor: pointer; margin-right: 3px;">✏️ 수정</button>
+                        <button onclick="deleteDebateVote('${vote.id}')" style="background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 10px; cursor: pointer;">🗑️ 삭제</button>
+                    </div>
+                ` : '';
+                
+                return `
+                    <div style="background: ${isMe ? '#f5c6cb' : '#f8f9fa'}; padding: 8px; border-radius: 4px; margin-bottom: 5px; font-size: 12px;" data-vote-id="${vote.id}">
+                        <strong>${vote.participantName}</strong> (${timestamp})<br>
+                        <div class="vote-opinion">${vote.opinion}${vote.isEdited ? ' <small style="opacity: 0.6;">(수정됨)</small>' : ''}</div>
+                        ${actionsHtml}
+                    </div>
+                `;
+            }).join('') || '<div style="color: #6c757d; text-align: center; padding: 20px;">아직 반대 의견이 없습니다.</div>';
+        }
+
+        // 찬반 토론 의견 수정
+        function editDebateVote(voteId) {
+            const voteDiv = document.querySelector(`[data-vote-id="${voteId}"]`);
+            if (!voteDiv) return;
+            
+            const opinionDiv = voteDiv.querySelector('.vote-opinion');
+            const currentOpinion = opinionDiv.textContent.replace(' (수정됨)', '').trim();
+            
+            // 편집 모드로 전환
+            opinionDiv.innerHTML = `
+                <textarea style="width: 100%; height: 40px; font-size: 11px; border: 1px solid #ccc; border-radius: 3px; padding: 4px;" id="edit-vote-${voteId}">${currentOpinion}</textarea>
+                <div style="margin-top: 5px;">
+                    <button onclick="saveDebateVote('${voteId}')" style="background: #28a745; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 10px; cursor: pointer; margin-right: 3px;">저장</button>
+                    <button onclick="cancelEditDebateVote('${voteId}', '${currentOpinion.replace(/'/g, "\\'")}')" style="background: #6c757d; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 10px; cursor: pointer;">취소</button>
+                </div>
+            `;
+            
+            // textarea에 포커스
+            const textarea = document.getElementById(`edit-vote-${voteId}`);
+            textarea.focus();
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
+
+        // 찬반 토론 의견 수정 저장
+        async function saveDebateVote(voteId) {
+            const textarea = document.getElementById(`edit-vote-${voteId}`);
+            const newOpinion = textarea.value.trim();
+            
+            if (!newOpinion) {
+                alert('의견을 입력해주세요.');
+                return;
+            }
+            
+            try {
+                // Firebase에서 투표 업데이트
+                await database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/votes/${voteId}`).update({
+                    opinion: newOpinion,
+                    lastModified: Date.now(),
+                    isEdited: true
+                });
+                
+                console.log('투표 수정 완료:', voteId);
+                
+            } catch (error) {
+                console.error('투표 수정 오류:', error);
+                alert('수정에 실패했습니다.');
+            }
+        }
+
+        // 찬반 토론 의견 수정 취소
+        function cancelEditDebateVote(voteId, originalOpinion) {
+            const voteDiv = document.querySelector(`[data-vote-id="${voteId}"]`);
+            const opinionDiv = voteDiv.querySelector('.vote-opinion');
+            
+            // 원래 내용으로 복원
+            opinionDiv.innerHTML = originalOpinion;
+        }
+
+        // 찬반 토론 의견 삭제
+        async function deleteDebateVote(voteId) {
+            if (!confirm('이 의견을 삭제하시겠습니까?')) {
+                return;
+            }
+            
+            try {
+                // Firebase에서 투표 삭제
+                await database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/votes/${voteId}`).remove();
+                
+                console.log('투표 삭제 완료:', voteId);
+                
+            } catch (error) {
+                console.error('투표 삭제 오류:', error);
+                alert('삭제에 실패했습니다.');
+            }
+        }
+
+        // 포스트잇 보드에 추가
+        function addPostitToBoard(postitData) {
+            const board = document.getElementById('postitBoard');
+            
+            // 중복 포스트잇 체크 (타임스탬프와 내용으로 확인)
+            const existingPostits = board.querySelectorAll('.postit');
+            for (let existingPostit of existingPostits) {
+                const existingTimestamp = existingPostit.getAttribute('data-timestamp');
+                const existingContent = existingPostit.querySelector('.postit-content')?.textContent;
+                if (existingTimestamp === String(postitData.timestamp) && 
+                    existingContent === postitData.message) {
+                    console.log('중복 포스트잇 감지, 추가하지 않음:', postitData.message);
+                    return;
+                }
+            }
+            
+            // 첫 번째 포스트잇일 때 안내 메시지 제거
+            const welcomeMsg = board.querySelector('[style*="text-align: center"]');
+            if (welcomeMsg) {
+                welcomeMsg.remove();
+            }
+            
+            const postit = document.createElement('div');
+            postit.className = `postit ${postitData.color || 'yellow'}`;
+            postit.setAttribute('data-message-id', postitData.messageId || postitData.id);
+            postit.setAttribute('data-participant-id', postitData.participantId);
+            postit.setAttribute('data-timestamp', postitData.timestamp);
+            
+            const isMyPostit = postitData.participantId === currentStudent;
+            const actionsHtml = isMyPostit ? `
+                <div class="postit-actions">
+                    <button class="postit-btn postit-edit-btn" onclick="editPostit('${postitData.messageId || postitData.id}')" title="수정">✏️</button>
+                    <button class="postit-btn postit-delete-btn" onclick="deletePostit('${postitData.messageId || postitData.id}')" title="삭제">🗑️</button>
+                </div>
+            ` : '';
+            
+            postit.innerHTML = `
+                ${actionsHtml}
+                <div class="postit-content">${postitData.content}</div>
+                <div class="postit-author">${postitData.participantName}</div>
+            `;
+
+            board.appendChild(postit);
+        }
+
+        // 포스트잇 수정
+        function editPostit(messageId) {
+            const postit = document.querySelector(`[data-message-id="${messageId}"]`);
+            if (!postit) return;
+            
+            const contentDiv = postit.querySelector('.postit-content');
+            const currentContent = contentDiv.textContent;
+            
+            // 편집 모드로 전환
+            postit.classList.add('postit-editing');
+            contentDiv.innerHTML = `
+                <textarea class="postit-edit-textarea" placeholder="포스트잇 내용을 입력하세요...">${currentContent}</textarea>
+                <div class="postit-edit-actions">
+                    <button class="postit-save-btn" onclick="savePostit('${messageId}')">저장</button>
+                    <button class="postit-cancel-btn" onclick="cancelEditPostit('${messageId}', '${currentContent.replace(/'/g, "\\'")}')">취소</button>
+                </div>
+            `;
+            
+            // 수정/삭제 버튼 숨김
+            const actions = postit.querySelector('.postit-actions');
+            if (actions) actions.style.display = 'none';
+            
+            // textarea에 포커스
+            const textarea = postit.querySelector('.postit-edit-textarea');
+            textarea.focus();
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
+
+        // 포스트잇 수정 저장
+        async function savePostit(messageId) {
+            const postit = document.querySelector(`[data-message-id="${messageId}"]`);
+            const textarea = postit.querySelector('.postit-edit-textarea');
+            const newContent = textarea.value.trim();
+            
+            if (!newContent) {
+                alert('내용을 입력해주세요.');
+                return;
+            }
+            
+            try {
+                // Firebase에서 메시지 업데이트
+                await database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/messages/${messageId}`).update({
+                    content: newContent,
+                    lastModified: Date.now(),
+                    isEdited: true
+                });
+                
+                // UI 업데이트
+                const contentDiv = postit.querySelector('.postit-content');
+                contentDiv.innerHTML = newContent + ' <small style="opacity: 0.6;">(수정됨)</small>';
+                
+                // 편집 모드 해제
+                postit.classList.remove('postit-editing');
+                
+                // 수정/삭제 버튼 다시 표시
+                const actions = postit.querySelector('.postit-actions');
+                if (actions) actions.style.display = '';
+                
+                console.log('포스트잇 수정 완료:', messageId);
+                
+            } catch (error) {
+                console.error('포스트잇 수정 오류:', error);
+                alert('수정에 실패했습니다.');
+            }
+        }
+
+        // 포스트잇 수정 취소
+        function cancelEditPostit(messageId, originalContent) {
+            const postit = document.querySelector(`[data-message-id="${messageId}"]`);
+            const contentDiv = postit.querySelector('.postit-content');
+            
+            // 원래 내용으로 복원
+            contentDiv.innerHTML = originalContent;
+            
+            // 편집 모드 해제
+            postit.classList.remove('postit-editing');
+            
+            // 수정/삭제 버튼 다시 표시
+            const actions = postit.querySelector('.postit-actions');
+            if (actions) actions.style.display = '';
+        }
+
+        // 포스트잇 삭제
+        async function deletePostit(messageId) {
+            if (!confirm('이 포스트잇을 삭제하시겠습니까?')) {
+                return;
+            }
+            
+            try {
+                // Firebase에서 메시지 삭제
+                await database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/messages/${messageId}`).remove();
+                
+                // UI에서 포스트잇 제거
+                const postit = document.querySelector(`[data-message-id="${messageId}"]`);
+                if (postit) {
+                    postit.style.animation = 'fadeOut 0.3s ease-in-out';
+                    setTimeout(() => {
+                        postit.remove();
+                        
+                        // 포스트잇이 모두 삭제되었으면 안내 메시지 표시
+                        const board = document.getElementById('postitBoard');
+                        if (board && board.children.length === 0) {
+                            board.innerHTML = `
+                                <div style="text-align: center; color: #6c757d; padding: 40px; font-size: 16px;">
+                                    💭 첫 번째 의견을 남겨보세요!
+                                </div>
+                            `;
+                        }
+                    }, 300);
+                }
+                
+                console.log('포스트잇 삭제 완료:', messageId);
+                
+            } catch (error) {
+                console.error('포스트잇 삭제 오류:', error);
+                alert('삭제에 실패했습니다.');
+            }
+        }
+
+        // 키보드 엔터 처리
+        function handlePostitEnter(event) {
+            if (event.key === 'Enter') {
+                addPostit();
+            }
+        }
+
+        // 화면 전환
+        function switchScreen(screenId) {
+            const screens = ['loginScreen', 'roomListScreen', 'discussionScreen'];
+            screens.forEach(id => {
+                document.getElementById(id).style.display = id === screenId ? 'block' : 'none';
+            });
+        }
+
+        // 뒤로 가기
+        function goBack() {
+            switchScreen('loginScreen');
+            document.getElementById('statusSection').style.display = 'none';
+            
+            // 토론방 목록 버튼 숨기기
+            const backToRoomListBtn = document.getElementById('backToRoomListBtn');
+            if (backToRoomListBtn) {
+                backToRoomListBtn.style.display = 'none';
+            }
+            
+            // 처음으로 돌아가기 버튼 숨기기
+            const backToLoginBtn = document.getElementById('backToLoginBtn');
+            if (backToLoginBtn) {
+                backToLoginBtn.style.display = 'none';
+            }
+            
+            // 상태 초기화
+            currentStudent = null;
+            currentClassCode = null;
+            currentClassName = null;
+        }
+
+        // 토론 나가기
+        function leaveDiscussion() {
+            if (currentTopicId && currentStudent) {
+                // 참여자 목록에서 제거 - 교사용과 동일한 경로 사용
+                database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/participants/${currentStudent}`).remove();
+            }
+            
+            // 교사 메시지 로테이션 정리
+            if (messageRotationInterval) {
+                clearInterval(messageRotationInterval);
+                messageRotationInterval = null;
+            }
+            teacherMessages = [];
+            currentMessageIndex = 0;
+            
+            // 모든 리스너 정리
+            cleanupListeners();
+            
+            switchScreen('roomListScreen');
+            currentTopicId = null;
+            
+            // 상태 패널 숨기기
+            document.getElementById('statusSection').style.display = 'none';
+            
+            // 토론방 목록 버튼 숨기기
+            const backToRoomListBtn = document.getElementById('backToRoomListBtn');
+            if (backToRoomListBtn) {
+                backToRoomListBtn.style.display = 'none';
+            }
+            
+            // 처음으로 돌아가기 버튼 표시
+            const backToLoginBtn = document.getElementById('backToLoginBtn');
+            if (backToLoginBtn) {
+                backToLoginBtn.style.display = 'inline-block';
+            }
+        }
+
+        // 프로그램 종료
+        function exitDiscussion() {
+            if (confirm('정말 토론을 종료하시겠습니까?')) {
+                if (currentTopicId && currentStudent) {
+                    // 교사용과 동일한 경로 사용
+                    database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/participants/${currentStudent}`).remove();
+                }
+                
+                // 교사 메시지 로테이션 정리
+                if (messageRotationInterval) {
+                    clearInterval(messageRotationInterval);
+                    messageRotationInterval = null;
+                }
+                teacherMessages = [];
+                currentMessageIndex = 0;
+                
+                goBack();
+            }
+        }
+
+        // 새로고침
+        function refreshRooms() {
+            if (currentClassCode) {
+                const classId = getClassId();
+                loadRooms(classId);
+            }
+        }
+
+
+        // 사이드바 업데이트
+        function updateSidebar() {
+            // 학생 정보 업데이트
+            const studentNameEl = document.getElementById('sidebarStudentName');
+            const studentAvatarEl = document.getElementById('studentAvatar');
+            if (studentNameEl && currentStudent) {
+                studentNameEl.textContent = currentStudent;
+                if (studentAvatarEl) {
+                    studentAvatarEl.textContent = currentStudent.charAt(0);
+                }
+            }
+            
+            // 방 정보 업데이트
+            const roomTitleEl = document.getElementById('sidebarRoomTitle');
+            const roomTypeEl = document.getElementById('sidebarRoomType');
+            if (roomTitleEl && currentTopicData) {
+                roomTitleEl.textContent = currentTopicData.title;
+                if (roomTypeEl) {
+                    const typeNames = {
+                        'debate': '찬반 토론',
+                        'discussion': '자유 토론',
+                        'survey': '설문 조사'
+                    };
+                    roomTypeEl.textContent = typeNames[currentTopicData.type] || '자유 토론';
+                }
+            }
+            
+            // 다른 토론방 목록 업데이트
+            updateOtherRoomsList();
+            
+            // 시간 업데이트 시작
+            if (currentTopicData && currentTopicData.endTime) {
+                startStatusPanelUpdater();
+            }
+        }
+        
+        // 다른 토론방 목록 업데이트
+        function updateOtherRoomsList() {
+            console.log('updateOtherRoomsList 시작');
+            const otherRoomsEl = document.getElementById('otherRoomsList');
+            if (!otherRoomsEl || !currentRooms) {
+                console.log('❌ otherRoomsEl 또는 currentRooms가 없음:', {otherRoomsEl, currentRooms});
+                return;
+            }
+            
+            // 현재 토론방 제외
+            let otherRooms = currentRooms.filter(room => room.id !== currentTopicId);
+            console.log('현재 토론방 제외한 목록:', otherRooms.length, '개');
+            
+            // 최신 생성순으로 정렬 (createdAt 기준 내림차순)
+            otherRooms.sort((a, b) => {
+                const timeA = a.createdAt || 0;
+                const timeB = b.createdAt || 0;
+                return timeB - timeA;
+            });
+            console.log('최신순 정렬 완료');
+            
+            // 체크박스 상태 확인 (사이드바용)
+            const showClosedCheckbox = document.getElementById('showClosedRoomsSidebarCheckbox');
+            const showClosed = showClosedCheckbox ? showClosedCheckbox.checked : false;
+            console.log('사이드바 체크박스 상태:', showClosed);
+            
+            // 종료된 토론방 필터링
+            if (!showClosed) {
+                console.log('종료된 토론방 제외 - 필터링 전:', otherRooms.map(r => ({id: r.id, title: r.title, status: r.status})));
+                // 진행 중인 토론방만 표시 (active, waiting만 허용)
+                otherRooms = otherRooms.filter(room => room.status === 'active' || room.status === 'waiting');
+                console.log('종료된 토론방 제외 - 필터링 후:', otherRooms.map(r => ({id: r.id, title: r.title, status: r.status})));
+            } else {
+                console.log('모든 토론방 표시:', otherRooms.map(r => ({id: r.id, title: r.title, status: r.status})));
+            }
+            
+            if (otherRooms.length === 0) {
+                const message = showClosed ? '다른 토론방이 없습니다' : '진행 중인 다른 토론방이 없습니다';
+                otherRoomsEl.innerHTML = `
+                    <div style="text-align: center; color: #6c757d; padding: 10px; font-size: 12px;">
+                        ${message}
+                    </div>
+                `;
+                return;
+            }
+            
+            const roomsHtml = otherRooms.map(room => {
+                const statusText = room.status === 'active' ? '진행중' : room.status === 'waiting' ? '대기중' : '종료';
+                const statusClass = room.status === 'active' ? '' : 'style="opacity: 0.6;"';
+                
+                return `
+                    <div class="room-item-mini" onclick="switchToRoom('${room.id}', '${room.title}', '${room.status}')" ${statusClass}>
+                        <div style="font-weight: bold; margin-bottom: 2px;">${room.title}</div>
+                        <div style="color: #6c757d;">${statusText} • ${Object.keys(room.participants || {}).length}명</div>
+                    </div>
+                `;
+            }).join('');
+            
+            otherRoomsEl.innerHTML = roomsHtml;
+        }
+        
+        // 포스트잇 보드 초기화 함수
+        function initializePostitBoard() {
+            const board = document.getElementById('postitBoard');
+            if (board) {
+                // 보드 완전히 초기화
+                board.innerHTML = `
+                    <div style="text-align: center; color: #6c757d; padding: 20px; grid-column: 1 / -1;">
+                        📝 아직 작성된 포스트잇이 없습니다.
+                    </div>
+                `;
+                console.log('포스트잇 보드 초기화 완료');
+            }
+        }
+
+        // 토론방 상태 업데이트 함수
+        function updateRoomStatus(room) {
+            if (!room.endTime) return;
+            
+            const now = Date.now();
+            const endTime = room.endTime;
+            
+            // 토론 시간이 끝났는데 아직 active 상태라면 closed로 변경
+            if (endTime < now && room.status === 'active') {
+                room.status = 'closed';
+                console.log(`토론방 "${room.title}" 시간 종료로 상태 변경: active → closed`);
+            }
+        }
+
+        // 종료된 토론방 표시 토글
+        function toggleClosedRooms() {
+            // 현재 화면에 따라 다른 업데이트 함수 호출
+            const roomListScreen = document.getElementById('roomListScreen');
+            const discussionScreen = document.getElementById('discussionScreen');
+            
+            if (roomListScreen && roomListScreen.style.display !== 'none') {
+                // 토론방 목록 화면에서 호출된 경우
+                displayRooms();
+            } else if (discussionScreen && discussionScreen.style.display !== 'none') {
+                // 토론 참여 화면에서 호출된 경우 (사이드바의 다른 토론방 목록)
+                updateOtherRoomsList();
+            }
+        }
+
+        // 사이드바 체크박스용 토글 함수 (새로고침 포함)
+        async function toggleClosedRoomsWithRefresh() {
+            console.log('사이드바 체크박스 클릭 - 토론방 목록 새로고침 시작');
+            
+            // 체크박스 상태 먼저 확인
+            const showClosedCheckbox = document.getElementById('showClosedRoomsSidebarCheckbox');
+            const showClosed = showClosedCheckbox ? showClosedCheckbox.checked : false;
+            console.log('체크박스 상태:', showClosed);
+            
+            try {
+                // 토론방 목록을 다시 로드
+                if (currentClassCode) {
+                    console.log('토론방 목록 새로고침:', currentClassCode);
+                    await loadRooms(currentClassCode);
+                    console.log('✅ 토론방 목록 새로고침 완료');
+                    
+                    // 새로고침 후 사이드바 업데이트
+                    updateOtherRoomsList();
+                    console.log('✅ 사이드바 업데이트 완료');
+                } else {
+                    console.log('❌ currentClassCode가 없어서 새로고침 불가');
+                    // 새로고침 없이 기존 목록만 업데이트
+                    updateOtherRoomsList();
+                }
+            } catch (error) {
+                console.error('토론방 목록 새로고침 오류:', error);
+                // 오류 발생 시 기존 방식으로 대체
+                updateOtherRoomsList();
+            }
+        }
+        
+        // 다른 토론방으로 전환
+        function switchToRoom(roomId, roomTitle, status) {
+            if (status !== 'active') {
+                alert('진행 중인 토론만 참여할 수 있습니다.');
+                return;
+            }
+            
+            if (confirm('현재 토론을 나가고 다른 토론으로 이동하시겠습니까?')) {
+                // 현재 토론에서 나가기
+                if (currentTopicId && currentStudent) {
+                    database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/participants/${currentStudent}`).remove();
+                }
+                
+                // 새 토론 참가
+                joinRoom(roomId, roomTitle, status);
+            }
+        }
+        
+        // 상태 패널 업데이트 함수
+        function updateDiscussionStats(participantCount) {
+            const discussionStatsEl = document.getElementById('discussionStats');
+            if (!discussionStatsEl) return;
+            
+            if (!currentTopicData || !currentTopicData.endTime) {
+                discussionStatsEl.innerHTML = `👥 ${participantCount}명`;
+                return;
+            }
+            
+            const now = Date.now();
+            const endTime = currentTopicData.endTime;
+            const timeLeft = endTime - now;
+            
+            if (timeLeft <= 0) {
+                discussionStatsEl.innerHTML = `종료됨 | 👥 ${participantCount}명`;
+                return;
+            }
+            
+            const minutes = Math.floor(timeLeft / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            discussionStatsEl.innerHTML = `${minutes}분 ${seconds.toString().padStart(2, '0')}초 | 👥 ${participantCount}명`;
+        }
+
+        // 상태 패널 시간 업데이터 시작
+        function startStatusPanelUpdater() {
+            if (!currentTopicData || !currentTopicData.endTime) return;
+            
+            function updateStatusPanel() {
+                // 현재 참여자 수 계산
+                const participants = Object.keys(currentTopicData.participants || {}).length;
+                updateDiscussionStats(participants);
+            }
+            
+            updateStatusPanel();
+            setInterval(updateStatusPanel, 1000);
+        }
+        
+        // 팁 로테이션
+        function rotateTips() {
+            const tipsBox = document.getElementById('tipsBox');
+            if (!tipsBox) return;
+            
+            const allTips = [
+                '구체적인 예시를 들어 의견을 표현해보세요',
+                '다른 친구들의 의견도 존중해주세요',
+                '창의적인 아이디어를 자유롭게 나누어보세요',
+                '주제에 맞는 의견을 작성해주세요',
+                '협력하여 더 나은 결론을 찾아보세요',
+                '질문이 있으면 언제든 물어보세요'
+            ];
+            
+            let currentTipIndex = 0;
+            
+            function updateTip() {
+                tipsBox.textContent = allTips[currentTipIndex];
+                currentTipIndex = (currentTipIndex + 1) % allTips.length;
+            }
+            
+            // 15초마다 팁 로테이션
+            setInterval(updateTip, 15000);
+        }
+        
+        // 유틸리티 함수
+        function getClassId() {
+            // currentClassCode에 실제 classId가 저장되어 있음
+            return currentClassCode;
+        }
+
+
+        // 토론 이력 보기 (학생용)
+        async function viewRoomHistory(roomId, roomTitle) {
+            try {
+                console.log('토론 이력 로드 중:', roomId);
+                
+                // 토론 기본 정보 로드
+                const topicSnapshot = await database.ref(`classes/${currentClassCode}/discussions/${roomId}`).once('value');
+                const topicData = topicSnapshot.val();
+                
+                if (!topicData) {
+                    alert('토론 정보를 찾을 수 없습니다.');
+                    return;
+                }
+                
+                // 토론 메시지/포스트잇 로드
+                const messagesSnapshot = await database.ref(`classes/${currentClassCode}/discussions/${roomId}/messages`).once('value');
+                const messages = messagesSnapshot.val() || {};
+                
+                // 찬반 토론인 경우 투표 데이터도 로드
+                let votes = {};
+                if (topicData.type === 'debate') {
+                    const votesSnapshot = await database.ref(`classes/${currentClassCode}/discussions/${roomId}/votes`).once('value');
+                    votes = votesSnapshot.val() || {};
+                }
+                
+                // 참여자 데이터 로드
+                const participantsSnapshot = await database.ref(`classes/${currentClassCode}/discussions/${roomId}/participants`).once('value');
+                const participants = participantsSnapshot.val() || {};
+                
+                // 학생용 이력 모달 표시
+                showStudentHistoryModal(topicData, messages, votes, participants);
+                
+            } catch (error) {
+                console.error('토론 이력 로드 오류:', error);
+                alert('토론 이력을 불러올 수 없습니다.');
+            }
+        }
+
+        // 학생용 토론 이력 모달 표시
+        function showStudentHistoryModal(topicData, messages, votes, participants) {
+            const typeNames = {
+                'debate': '찬반 토론',
+                'discussion': '자유 토론', 
+                'postit': '포스트잇 토론',
+                'survey': '설문 조사'
+            };
+            
+            const createdDate = new Date(topicData.createdAt).toLocaleString();
+            const endDate = topicData.endTime ? new Date(topicData.endTime).toLocaleString() : '진행 중';
+            const participantCount = Object.keys(participants).length;
+            const messageCount = Object.keys(messages).length;
+            
+            // 내가 참여했는지 확인
+            const didParticipate = participants[currentStudent] ? true : false;
+            
+            // 모달 HTML 생성
+            const modalHTML = `
+                <div id="historyModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: white; border-radius: 12px; width: 90%; max-width: 700px; max-height: 90%; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                        <!-- 헤더 -->
+                        <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 20px; border-radius: 12px 12px 0 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h3 style="margin: 0 0 8px 0;">📚 ${topicData.title}</h3>
+                                    <p style="margin: 0; opacity: 0.9;">${typeNames[topicData.type] || '토론'} • ${didParticipate ? '참여함' : '참여 안함'}</p>
+                                </div>
+                                <button onclick="closeHistoryModal()" style="background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 18px;">×</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 내용 -->
+                        <div style="padding: 20px;">
+                            <!-- 기본 정보 -->
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+                                    <div>
+                                        <strong>📅 시작 시간</strong><br>
+                                        <span style="color: #6c757d; font-size: 13px;">${createdDate}</span>
+                                    </div>
+                                    <div>
+                                        <strong>⏰ 종료 시간</strong><br>
+                                        <span style="color: #6c757d; font-size: 13px;">${endDate}</span>
+                                    </div>
+                                    <div>
+                                        <strong>👥 참여자</strong><br>
+                                        <span style="color: #6c757d; font-size: 13px;">${participantCount}명</span>
+                                    </div>
+                                    <div>
+                                        <strong>💬 활동량</strong><br>
+                                        <span style="color: #6c757d; font-size: 13px;">${messageCount}개</span>
+                                    </div>
+                                </div>
+                                ${topicData.description ? `
+                                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #dee2e6;">
+                                        <strong>📝 주제 설명</strong><br>
+                                        <span style="color: #6c757d; font-size: 13px;">${topicData.description}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            
+                            <!-- 참여 상태 -->
+                            <div style="margin-bottom: 20px;">
+                                ${didParticipate ? `
+                                    <div style="background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px; border-radius: 8px; text-align: center;">
+                                        ✅ 이 토론에 참여했습니다
+                                    </div>
+                                ` : `
+                                    <div style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 8px; text-align: center;">
+                                        ❌ 이 토론에 참여하지 않았습니다
+                                    </div>
+                                `}
+                            </div>
+                            
+                            <!-- 토론 결과 -->
+                            <div id="historyContent">
+                                ${generateStudentHistoryContent(topicData.type, messages, votes, participants, didParticipate)}
+                            </div>
+                        </div>
+                        
+                        <!-- 푸터 -->
+                        <div style="padding: 15px 20px; border-top: 1px solid #dee2e6; text-align: right;">
+                            <button class="btn btn-secondary" onclick="closeHistoryModal()">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // 모달을 body에 추가
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        // 학생용 토론 이력 내용 생성
+        function generateStudentHistoryContent(type, messages, votes, participants, didParticipate) {
+            if (type === 'debate') {
+                return generateStudentDebateHistory(votes, participants, didParticipate);
+            } else {
+                return generateStudentDiscussionHistory(messages, participants, didParticipate);
+            }
+        }
+
+        // 학생용 찬반 토론 이력
+        function generateStudentDebateHistory(votes, participants, didParticipate) {
+            const agreeVotes = [];
+            const disagreeVotes = [];
+            let myVote = null;
+            
+            Object.values(votes).forEach(vote => {
+                if (vote.participantId === currentStudent) {
+                    myVote = vote;
+                }
+                if (vote.position === 'agree') {
+                    agreeVotes.push(vote);
+                } else if (vote.position === 'disagree') {
+                    disagreeVotes.push(vote);
+                }
+            });
+            
+            const agreeCount = agreeVotes.length;
+            const disagreeCount = disagreeVotes.length;
+            const total = agreeCount + disagreeCount;
+            const agreePercent = total > 0 ? (agreeCount / total * 100).toFixed(1) : 0;
+            const disagreePercent = total > 0 ? (disagreeCount / total * 100).toFixed(1) : 0;
+            
+            return `
+                <!-- 최종 투표 결과 -->
+                <div style="margin-bottom: 20px;">
+                    <h5 style="margin-bottom: 12px;">📊 최종 투표 결과</h5>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
+                            <div style="flex: 1; background: #d4edda; height: 25px; border-radius: 12px; position: relative; overflow: hidden;">
+                                <div style="background: #28a745; height: 100%; width: ${agreePercent}%; transition: width 1s ease;"></div>
+                                <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; font-size: 11px;">
+                                    찬성 ${agreeCount}명 (${agreePercent}%)
+                                </span>
+                            </div>
+                            <div style="flex: 1; background: #f8d7da; height: 25px; border-radius: 12px; position: relative; overflow: hidden;">
+                                <div style="background: #dc3545; height: 100%; width: ${disagreePercent}%; transition: width 1s ease;"></div>
+                                <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; font-size: 11px;">
+                                    반대 ${disagreeCount}명 (${disagreePercent}%)
+                                </span>
+                            </div>
+                        </div>
+                        <div style="text-align: center; color: #6c757d; font-size: 11px;">
+                            총 ${total}명이 투표에 참여했습니다
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 내 투표 -->
+                ${myVote ? `
+                    <div style="margin-bottom: 20px;">
+                        <h6 style="margin-bottom: 10px;">✋ 나의 투표</h6>
+                        <div style="background: ${myVote.position === 'agree' ? '#d4edda' : '#f8d7da'}; border: 2px solid ${myVote.position === 'agree' ? '#28a745' : '#dc3545'}; padding: 12px; border-radius: 8px;">
+                            <div style="font-weight: bold; color: ${myVote.position === 'agree' ? '#155724' : '#721c24'}; margin-bottom: 5px;">
+                                ${myVote.position === 'agree' ? '✅ 찬성' : '❌ 반대'} 투표
+                            </div>
+                            <div style="color: ${myVote.position === 'agree' ? '#155724' : '#721c24'}; font-size: 13px;">
+                                ${myVote.opinion}${myVote.isEdited ? ' <small>(수정됨)</small>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                ` : didParticipate ? `
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+                        📝 이 토론에서 투표하지 않았습니다
+                    </div>
+                ` : ''}
+                
+                <!-- 주요 의견들 (일부만) -->
+                <div>
+                    <h6 style="margin-bottom: 12px;">💭 주요 의견들</h6>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <div style="color: #28a745; font-weight: bold; margin-bottom: 8px; font-size: 12px;">✅ 찬성 의견</div>
+                            <div style="max-height: 200px; overflow-y: auto;">
+                                ${agreeVotes.slice(0, 3).map(vote => `
+                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin-bottom: 6px; font-size: 12px;">
+                                        <div style="color: #6c757d; margin-bottom: 3px;">${vote.participantName}</div>
+                                        <div>${vote.opinion}</div>
+                                    </div>
+                                `).join('') || '<div style="text-align: center; color: #6c757d; padding: 15px; font-size: 12px;">찬성 의견이 없습니다</div>'}
+                                ${agreeVotes.length > 3 ? `<div style="text-align: center; color: #6c757d; font-size: 11px; margin-top: 5px;">외 ${agreeVotes.length - 3}개 더...</div>` : ''}
+                            </div>
+                        </div>
+                        <div>
+                            <div style="color: #dc3545; font-weight: bold; margin-bottom: 8px; font-size: 12px;">❌ 반대 의견</div>
+                            <div style="max-height: 200px; overflow-y: auto;">
+                                ${disagreeVotes.slice(0, 3).map(vote => `
+                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin-bottom: 6px; font-size: 12px;">
+                                        <div style="color: #6c757d; margin-bottom: 3px;">${vote.participantName}</div>
+                                        <div>${vote.opinion}</div>
+                                    </div>
+                                `).join('') || '<div style="text-align: center; color: #6c757d; padding: 15px; font-size: 12px;">반대 의견이 없습니다</div>'}
+                                ${disagreeVotes.length > 3 ? `<div style="text-align: center; color: #6c757d; font-size: 11px; margin-top: 5px;">외 ${disagreeVotes.length - 3}개 더...</div>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 학생용 자유 토론 이력
+        function generateStudentDiscussionHistory(messages, participants, didParticipate) {
+            const messageArray = Object.values(messages).sort((a, b) => a.timestamp - b.timestamp);
+            const myMessages = messageArray.filter(msg => msg.participantId === currentStudent);
+            const postits = messageArray.filter(msg => msg.type === 'postit');
+            const chatMessages = messageArray.filter(msg => msg.type !== 'postit');
+            
+            return `
+                <!-- 내 활동 요약 -->
+                ${myMessages.length > 0 ? `
+                    <div style="margin-bottom: 20px;">
+                        <h6 style="margin-bottom: 10px;">✋ 나의 활동</h6>
+                        <div style="background: #e7f3ff; border: 2px solid #007bff; padding: 12px; border-radius: 8px;">
+                            <div style="display: flex; gap: 20px; text-align: center;">
+                                <div>
+                                    <div style="font-weight: bold; color: #0056b3;">${myMessages.filter(m => m.type === 'postit').length}</div>
+                                    <div style="font-size: 11px; color: #6c757d;">포스트잇</div>
+                                </div>
+                                <div>
+                                    <div style="font-weight: bold; color: #0056b3;">${myMessages.filter(m => m.type !== 'postit').length}</div>
+                                    <div style="font-size: 11px; color: #6c757d;">메시지</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ` : didParticipate ? `
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+                        📝 이 토론에서 활동하지 않았습니다
+                    </div>
+                ` : ''}
+                
+                <!-- 전체 활동 요약 -->
+                <div>
+                    <h6 style="margin-bottom: 12px;">📝 토론 내용</h6>
+                    
+                    ${postits.length > 0 ? `
+                        <div style="margin-bottom: 15px;">
+                            <div style="color: #495057; font-weight: bold; margin-bottom: 8px; font-size: 13px;">📌 포스트잇 (${postits.length}개)</div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; max-height: 200px; overflow-y: auto;">
+                                ${postits.slice(0, 6).map(postit => `
+                                    <div style="background: ${getPostitColor(postit.color)}; padding: 8px; border-radius: 4px; font-size: 11px; position: relative; ${postit.participantId === currentStudent ? 'border: 2px solid #007bff;' : ''}">
+                                        <div style="line-height: 1.3; margin-bottom: 5px;">${postit.content}</div>
+                                        <div style="font-size: 9px; opacity: 0.7; position: absolute; bottom: 3px; right: 5px;">${postit.participantName}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            ${postits.length > 6 ? `<div style="text-align: center; color: #6c757d; font-size: 11px; margin-top: 5px;">외 ${postits.length - 6}개 더...</div>` : ''}
+                        </div>
+                    ` : ''}
+                    
+                    ${chatMessages.length > 0 ? `
+                        <div>
+                            <div style="color: #495057; font-weight: bold; margin-bottom: 8px; font-size: 13px;">💬 메시지 (${chatMessages.length}개)</div>
+                            <div style="max-height: 200px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 6px; padding: 10px;">
+                                ${chatMessages.slice(0, 10).map(msg => `
+                                    <div style="margin-bottom: 8px; padding: 6px; background: ${msg.participantId === currentStudent ? '#e7f3ff' : '#f8f9fa'}; border-radius: 4px; font-size: 12px; ${msg.participantId === currentStudent ? 'border-left: 3px solid #007bff;' : ''}">
+                                        <div style="color: #6c757d; margin-bottom: 2px; font-size: 10px;">${msg.participantName} • ${new Date(msg.timestamp).toLocaleTimeString()}</div>
+                                        <div>${msg.content || msg.text}</div>
+                                    </div>
+                                `).join('')}
+                                ${chatMessages.length > 10 ? `<div style="text-align: center; color: #6c757d; font-size: 11px; margin-top: 5px;">외 ${chatMessages.length - 10}개 더...</div>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${postits.length === 0 && chatMessages.length === 0 ? `
+                        <div style="text-align: center; color: #6c757d; padding: 30px;">
+                            💭 이 토론에는 아직 내용이 없습니다
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // 포스트잇 색상 변환
+        function getPostitColor(color) {
+            const colors = {
+                'yellow': '#ffeb3b',
+                'blue': '#2196f3', 
+                'green': '#4caf50',
+                'pink': '#e91e63'
+            };
+            return colors[color] || '#ffeb3b';
+        }
+
+        // 이력 모달 닫기
+        function closeHistoryModal() {
+            const modal = document.getElementById('historyModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // 페이지 로드 시 실행
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('학급 토론 참여 시스템 - 학생용 로드 완료');
+            
+            // URL 파라미터 확인 (교사가 직접 링크를 제공한 경우)
+            const urlParams = new URLSearchParams(window.location.search);
+            const classCode = urlParams.get('class');
+            const studentName = urlParams.get('name');
+            
+            if (classCode) {
+                document.getElementById('classCodeInput').value = classCode;
+            }
+            if (studentName) {
+                document.getElementById('nameInput').value = studentName;
+            }
+            
+            // 팁 로테이션 시작
+            rotateTips();
+        });
+        
+        // 교사 메시지 저장 배열
+        let teacherMessages = [];
+        
+        // 교사 메시지 초기화 함수 (디버깅용)
+        window.clearTeacherMessages = function() {
+            teacherMessages = [];
+            currentMessageIndex = 0;
+            if (messageRotationInterval) {
+                clearInterval(messageRotationInterval);
+                messageRotationInterval = null;
+            }
+            const messagesBox = document.getElementById('teacherMessagesBox');
+            if (messagesBox) {
+                messagesBox.innerHTML = '<div style="color: #6c757d; text-align: center; padding: 20px; font-style: italic;">📢 교사 메시지를 기다리고 있습니다<br><small>메시지가 초기화되었습니다</small></div>';
+            }
+            console.log('🧹 교사 메시지 초기화 완료');
+        };
+        let currentMessageIndex = 0;
+        let messageRotationInterval = null;
+        
+        // 현재 활성 리스너들 추적
+        let activeListeners = {
+            teacherMessages: null,
+            settings: null,
+            participants: null,
+            messages: null
+        };
+
+        // 교사 메시지 표시 함수
+        function displayTeacherMessage(messageData) {
+            console.log('📝 displayTeacherMessage 호출:', messageData);
+            const messagesBox = document.getElementById('teacherMessagesBox');
+            
+            // 메시지를 배열에 추가
+            const messageTime = new Date(messageData.timestamp).toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const messageContent = messageData.message || messageData.text || messageData.content || '[메시지 내용 없음]';
+            console.log('🔍 메시지 내용 추출:', {
+                'messageData.message': messageData.message,
+                'messageData.text': messageData.text,
+                'messageData.content': messageData.content,
+                '최종 선택된 내용': messageContent
+            });
+            
+            const formattedMessage = {
+                content: messageContent,
+                time: messageTime,
+                timestamp: messageData.timestamp
+            };
+            
+            teacherMessages.push(formattedMessage);
+            console.log('새 교사 메시지 추가:', formattedMessage.content);
+            
+            // 메시지 로테이션 시작 또는 업데이트
+            startMessageRotation();
+        }
+        
+        // 메시지 로테이션 시작
+        function startMessageRotation() {
+            const messagesBox = document.getElementById('teacherMessagesBox');
+            
+            if (teacherMessages.length === 0) return;
+            
+            // 기존 인터벌 정리
+            if (messageRotationInterval) {
+                clearInterval(messageRotationInterval);
+            }
+            
+            // 현재 메시지 표시
+            function showCurrentMessage() {
+                const message = teacherMessages[currentMessageIndex];
+                messagesBox.innerHTML = `
+                    <div class="teacher-message" ondblclick="showTeacherMessagesModal()" title="더블클릭하여 모든 메시지 보기">
+                        <div class="teacher-message-content">${message.content}</div>
+                        <div class="teacher-message-time">${message.time}</div>
+                        ${teacherMessages.length > 1 ? `<div style="text-align: center; font-size: 10px; color: #007bff; margin-top: 5px;">💡 더블클릭하여 모든 메시지 보기 (${currentMessageIndex + 1}/${teacherMessages.length})</div>` : ''}
+                    </div>
+                `;
+            }
+            
+            // 첫 메시지 즉시 표시
+            showCurrentMessage();
+            
+            // 메시지가 2개 이상일 때만 로테이션
+            if (teacherMessages.length > 1) {
+                messageRotationInterval = setInterval(() => {
+                    currentMessageIndex = (currentMessageIndex + 1) % teacherMessages.length;
+                    showCurrentMessage();
+                }, 5000); // 5초마다 로테이션
+            }
+        }
+
+        // 교사 메시지 모달 표시
+        function showTeacherMessagesModal() {
+            if (teacherMessages.length === 0) {
+                alert('표시할 교사 메시지가 없습니다.');
+                return;
+            }
+
+            // 시간순으로 정렬 (최신순)
+            const sortedMessages = [...teacherMessages].sort((a, b) => b.timestamp - a.timestamp);
+
+            const modal = document.createElement('div');
+            modal.className = 'teacher-message-modal';
+            modal.innerHTML = `
+                <div class="teacher-message-modal-content">
+                    <div class="teacher-message-modal-header">
+                        <h3 style="margin: 0; font-size: 16px;">💬 교사 메시지 전체 보기</h3>
+                        <button class="modal-close-btn" onclick="closeTeacherMessagesModal()">×</button>
+                    </div>
+                    <div class="teacher-message-modal-body">
+                        <div style="margin-bottom: 15px; color: #6c757d; font-size: 13px; text-align: center;">
+                            총 ${teacherMessages.length}개의 메시지 (최신순)
+                        </div>
+                        ${sortedMessages.map((message, index) => `
+                            <div class="teacher-message-item">
+                                <div class="teacher-message-item-content">${message.content}</div>
+                                <div class="teacher-message-item-time">
+                                    ${message.time}
+                                    ${index === 0 ? '<span style="color: #28a745; font-weight: bold;"> (최신)</span>' : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #dee2e6; text-align: center;">
+                            <button onclick="closeTeacherMessagesModal()" style="background: #6c757d; color: white; border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer; font-size: 12px;">
+                                닫기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // ESC 키로 닫기
+            modal.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeTeacherMessagesModal();
+                }
+            });
+
+            // 배경 클릭으로 닫기
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeTeacherMessagesModal();
+                }
+            });
+
+            document.body.appendChild(modal);
+            modal.focus(); // 키보드 이벤트를 위해 포커스 설정
+
+            console.log('교사 메시지 모달 표시:', teacherMessages.length, '개 메시지');
+        }
+
+        // 교사 메시지 모달 닫기
+        function closeTeacherMessagesModal() {
+            const modal = document.querySelector('.teacher-message-modal');
+            if (modal) {
+                modal.remove();
+                console.log('교사 메시지 모달 닫힘');
+            }
+        }
+
+        // 채팅 영역 초기화
+        function initializeChatArea() {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatWelcome = document.getElementById('chatWelcome');
+            if (chatMessages && chatWelcome) {
+                chatWelcome.style.display = 'block';
+            }
+        }
+
+        // 답장 관련 전역 변수
+        let replyToMessage = null;
+        
+        // 답장 시작
+        function startReply(messageId, authorName, content) {
+            replyToMessage = {
+                id: messageId,
+                author: authorName,
+                content: content.substring(0, 100) + (content.length > 100 ? '...' : '') // 100자까지만 표시
+            };
+            
+            // 답장 미리보기 표시
+            const replyPreview = document.getElementById('replyPreview');
+            const replyContent = document.getElementById('replyContent');
+            
+            replyContent.innerHTML = `
+                <div style="font-weight: bold; margin-bottom: 4px;">${authorName}</div>
+                <div>${replyToMessage.content}</div>
+            `;
+            
+            replyPreview.style.display = 'block';
+            
+            // 입력창에 포커스
+            document.getElementById('chatInput').focus();
+        }
+        
+        // 답장 취소
+        function cancelReply() {
+            replyToMessage = null;
+            document.getElementById('replyPreview').style.display = 'none';
+        }
+
+        // 채팅 메시지 전송
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) {
+                alert('메시지를 입력해주세요.');
+                return;
+            }
+            
+            try {
+                // 메시지 ID 생성
+                const messageRef = database.ref(`classes/${currentClassCode}/discussions/${currentTopicId}/messages`).push();
+                const messageId = messageRef.key;
+
+                // 채팅 메시지 데이터
+                const messageData = {
+                    id: messageId,
+                    participantId: currentStudent,
+                    participantName: currentStudent,
+                    content: message,
+                    type: 'chat',
+                    isAnonymous: false,
+                    timestamp: Date.now(),
+                    edited: false
+                };
+                
+                // 답장 정보 추가
+                if (replyToMessage) {
+                    messageData.replyToId = replyToMessage.id;
+                    messageData.replyToAuthor = replyToMessage.author;
+                    messageData.replyToContent = replyToMessage.content;
+                }
+
+                // Firebase에 저장
+                await database.ref(`discussions/${currentTopicId}/messages/${messageId}`).set(messageData);
+                
+                console.log('채팅 메시지 전송 완료:', messageData);
+                input.value = '';
+                
+                // 답장 미리보기 숨기기
+                if (replyToMessage) {
+                    cancelReply();
+                }
+                
+            } catch (error) {
+                console.error('채팅 메시지 전송 오류:', error);
+                alert('메시지 전송에 실패했습니다.');
+            }
+        }
+
+        // 채팅 메시지 추가
+        function addChatMessage(messageData) {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatWelcome = document.getElementById('chatWelcome');
+            
+            if (!chatMessages) return;
+            
+            // 중복 메시지 확인 (같은 ID의 메시지가 이미 있는지 체크)
+            const existingMessage = chatMessages.querySelector(`[data-message-id="${messageData.id}"]`);
+            if (existingMessage) {
+                console.log('중복 채팅 메시지 무시:', messageData.id);
+                return;
+            }
+            
+            // 환영 메시지 숨기기
+            if (chatWelcome) {
+                chatWelcome.style.display = 'none';
+            }
+            
+            // 메시지 시간 포맷팅
+            const messageTime = new Date(messageData.timestamp).toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // 내 메시지인지 확인
+            const isMyMessage = messageData.participantId === currentStudent;
+            const messageClass = isMyMessage ? 'my-message' : 'other-message';
+            
+            // 답장 메시지인지 확인
+            const replyContent = messageData.replyToId ? `
+                <div class="reply-preview" style="background: #f1f3f4; border-left: 3px solid #007bff; padding: 8px; margin-bottom: 8px; border-radius: 4px; font-size: 12px; color: #6c757d;">
+                    <div style="font-weight: bold; margin-bottom: 2px;">↳ ${messageData.replyToAuthor}에게 답장</div>
+                    <div style="opacity: 0.8;">${messageData.replyToContent}</div>
+                </div>
+            ` : '';
+            
+            // 메시지 HTML 생성
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${messageClass}`;
+            messageDiv.setAttribute('data-message-id', messageData.id);
+            messageDiv.style.position = 'relative';
+            messageDiv.innerHTML = `
+                ${replyContent}
+                <div class="message-header">
+                    <span class="message-author">${messageData.participantName}</span>
+                    <span class="message-time">${messageTime}</span>
+                    <button class="reply-btn" onclick="startReply('${messageData.id}', '${messageData.participantName}', '${messageData.content.replace(/'/g, "&#39;").replace(/"/g, "&quot;")}')" 
+                            style="position: absolute; right: 8px; top: 8px; background: none; border: 1px solid #dee2e6; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; font-size: 12px;" 
+                            title="답장하기">
+                        ↩️
+                    </button>
+                </div>
+                <div class="message-content">${messageData.content}</div>
+            `;
+            
+            // 답장 버튼 호버 효과 추가
+            messageDiv.addEventListener('mouseenter', function() {
+                const replyBtn = this.querySelector('.reply-btn');
+                if (replyBtn) replyBtn.style.opacity = '1';
+            });
+            
+            messageDiv.addEventListener('mouseleave', function() {
+                const replyBtn = this.querySelector('.reply-btn');
+                if (replyBtn) replyBtn.style.opacity = '0';
+            });
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // 스크롤을 맨 아래로
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 채팅 입력에서 엔터키 처리
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendChatMessage();
+            }
+        }
+
+        // 이모지 데이터
+        const emojiData = {
+            face: ['😊', '😂', '🤣', '😍', '🥰', '😘', '😋', '😜', '🤔', '😎', '🤗', '😢', '😭', '😡', '🤯', '😴'],
+            gesture: ['👍', '👎', '👌', '✌️', '🤞', '👏', '🙏', '💪', '👋', '👍🏻', '👎🏻', '👌🏻', '✌🏻', '🤞🏻', '👏🏻', '🙏🏻'],
+            heart: ['❤️', '💙', '💚', '💛', '🧡', '💜', '🖤', '💖', '💕', '💗', '💘', '💝', '💞', '💟', '💢', '💯'],
+            nature: ['🌸', '🌺', '🌻', '🌷', '🌹', '🌿', '🍀', '🌳', '🌲', '🦋', '🐝', '🌈', '⭐', '🌙', '☀️', '🔥'],
+            food: ['🍎', '🍊', '🍋', '🍌', '🍇', '🍓', '🫐', '🍒', '🥝', '🍑', '🥭', '🍍', '🥥', '🍅', '🍆', '🥕'],
+            activity: ['⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🏉', '🎱', '🏓', '🏸', '🎯', '⛳', '🎮', '🎵', '🎶', '📚']
+        };
+
+        // 이모지 피커 토글
+        function toggleEmojiPicker() {
+            const emojiPicker = document.getElementById('emojiPicker');
+            if (emojiPicker.style.display === 'none' || emojiPicker.style.display === '') {
+                emojiPicker.style.display = 'block';
+                showEmojiCategory('face'); // 기본으로 얼굴 이모지 표시
+            } else {
+                emojiPicker.style.display = 'none';
+            }
+        }
+
+        // 이모지 카테고리 표시
+        function showEmojiCategory(category) {
+            // 카테고리 버튼 활성화 상태 변경
+            document.querySelectorAll('.emoji-category').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+
+            // 해당 카테고리의 이모지들 표시
+            const emojiGrid = document.getElementById('emojiGrid');
+            const emojis = emojiData[category] || [];
+            
+            emojiGrid.innerHTML = emojis.map(emoji => 
+                `<button class="emoji-item" onclick="insertEmoji('${emoji}')" title="${emoji}">${emoji}</button>`
+            ).join('');
+        }
+
+        // 이모지 삽입
+        function insertEmoji(emoji) {
+            const chatInput = document.getElementById('chatInput');
+            const currentValue = chatInput.value;
+            const cursorPos = chatInput.selectionStart;
+            
+            // 커서 위치에 이모지 삽입
+            const newValue = currentValue.slice(0, cursorPos) + emoji + currentValue.slice(cursorPos);
+            chatInput.value = newValue;
+            
+            // 커서를 이모지 뒤로 이동
+            chatInput.setSelectionRange(cursorPos + emoji.length, cursorPos + emoji.length);
+            
+            // 입력 필드에 포커스
+            chatInput.focus();
+            
+            // 이모지 피커 닫기
+            document.getElementById('emojiPicker').style.display = 'none';
+        }
+
+        // 이모지 피커 외부 클릭 시 닫기
+        document.addEventListener('click', function(event) {
+            const emojiPicker = document.getElementById('emojiPicker');
+            const emojiBtn = document.querySelector('.emoji-btn');
+            
+            if (emojiPicker && !emojiPicker.contains(event.target) && event.target !== emojiBtn) {
+                emojiPicker.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
