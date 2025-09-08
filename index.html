@@ -2360,15 +2360,33 @@
                 return;
             }
             
+            // Firebase 설정 가져오기
+            const apiKey = localStorage.getItem('user_firebase_apiKey');
+            const projectId = localStorage.getItem('user_firebase_projectId');
+            
             // 현재 URL의 기본 경로에서 학생용 파일로 링크 생성
             const currentUrl = window.location.href;
             const basePath = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-            const studentUrl = `${basePath}/student.html?class=${classCode}`;
+            
+            let studentUrl = `${basePath}/student.html?class=${classCode}`;
+            
+            // Firebase 설정이 있으면 URL에 포함
+            if (apiKey && projectId) {
+                const encodedApiKey = encodeURIComponent(apiKey);
+                const encodedProjectId = encodeURIComponent(projectId);
+                studentUrl += `&api=${encodedApiKey}&project=${encodedProjectId}`;
+                console.log('🔗 Firebase 설정과 함께 학생 링크 생성:', studentUrl);
+            } else {
+                console.warn('⚠️ Firebase 설정이 없어 기본 링크 생성');
+            }
             
             // 클립보드에 복사
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(studentUrl).then(() => {
-                    alert(`🔗 학생용 링크가 복사되었습니다!\n\n${studentUrl}\n\n학생들은 이 링크를 클릭하면 바로 반 참여 화면으로 이동합니다.`);
+                    const message = apiKey && projectId 
+                        ? `🔗 학생용 링크가 복사되었습니다! (Firebase 설정 포함)\n\n${studentUrl}\n\n학생들은 이 링크를 클릭하면 자동으로 Firebase 설정이 적용되어 바로 반 참여가 가능합니다.`
+                        : `🔗 학생용 링크가 복사되었습니다!\n\n${studentUrl}\n\n⚠️ Firebase 설정을 먼저 완료한 후 링크를 다시 생성하시기 바랍니다.`;
+                    alert(message);
                 }).catch(() => {
                     fallbackCopyTextToClipboard(studentUrl);
                 });
