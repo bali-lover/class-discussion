@@ -1227,6 +1227,12 @@
             "👥 협력하여 더 나은 결론을 찾아보세요"
         ];
 
+        // 에러 메시지 표시 함수
+        function showError(message) {
+            alert('❌ ' + message);
+            console.error('오류:', message);
+        }
+
         // URL 파라미터에서 Firebase 설정 가져오기
         function getFirebaseConfigFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1280,9 +1286,8 @@
             if (userConfig) {
                 return userConfig;
             } else {
-                // Firebase 설정이 없으면 오류 표시
-                showError('Firebase 설정이 필요합니다. 교사에게 올바른 링크를 요청하세요.');
-                throw new Error('Firebase 설정이 필요합니다.');
+                // Firebase 설정이 없으면 null 반환 (오류는 loadFirebase에서 처리)
+                return null;
             }
         }
 
@@ -1293,12 +1298,18 @@
             }
 
             try {
-                // Firebase 스크립트 로드
-                await loadScript('https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js');
-                await loadScript('https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js');
+                // Firebase 설정 확인
+                const config = getFirebaseConfig();
+                if (!config) {
+                    showError('Firebase 설정이 필요합니다. 교사에게 올바른 링크를 요청하세요.');
+                    return false;
+                }
+                
+                // Firebase 스크립트 로드 (크롬북 호환성을 위해 안정적인 버전 사용)
+                await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
+                await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
                 
                 // Firebase 초기화
-                const config = getFirebaseConfig();
                 const app = firebase.initializeApp(config, 'studentApp-' + Date.now());
                 database = app.database();
                 
@@ -1306,18 +1317,33 @@
                 return true;
             } catch (error) {
                 console.error('Firebase 로드 실패:', error);
-                alert('Firebase 연결에 실패했습니다. 교사에게 문의해주세요.');
+                showError('Firebase 연결에 실패했습니다. 교사에게 문의해주세요.');
                 return false;
             }
         }
 
-        // 스크립트 로드 함수
-        function loadScript(src) {
+        // 스크립트 로드 함수 (재시도 로직 포함)
+        function loadScript(src, retries = 3) {
             return new Promise((resolve, reject) => {
                 const script = document.createElement('script');
                 script.src = src;
-                script.onload = resolve;
-                script.onerror = reject;
+                script.onload = () => {
+                    console.log(`스크립트 로드 성공: ${src}`);
+                    resolve();
+                };
+                script.onerror = () => {
+                    console.error(`스크립트 로드 실패: ${src}`);
+                    document.head.removeChild(script);
+                    
+                    if (retries > 0) {
+                        console.log(`스크립트 재시도: ${src} (${retries}회 남음)`);
+                        setTimeout(() => {
+                            loadScript(src, retries - 1).then(resolve).catch(reject);
+                        }, 1000);
+                    } else {
+                        reject(new Error(`스크립트 로드 최종 실패: ${src}`));
+                    }
+                };
                 document.head.appendChild(script);
             });
         }
