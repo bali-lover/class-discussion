@@ -765,13 +765,13 @@
                 
                 // Firebase App SDK 로드
                 const script1 = document.createElement('script');
-            script1.src = 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js';
+            script1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
             script1.onload = () => {
                 addLog('✅ Firebase App SDK (v10.13.0) 로드 완료', 'success');
                 
                 // Firebase Database SDK 로드
                 const script2 = document.createElement('script');
-                script2.src = 'https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js';
+                script2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
                 script2.onload = () => {
                     addLog('✅ Firebase Database SDK 로드 완료', 'success');
                     updateProgress(1, 'warning', 'Firebase SDK 로드됨 - 연결 테스트 중');
@@ -1345,13 +1345,13 @@
                 
                 // Firebase App SDK 로드
                 const script1 = document.createElement('script');
-                script1.src = 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js';
+                script1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
                 script1.onload = () => {
                     addLog('✅ Firebase App SDK 로드 완료', 'success');
                     
                     // Firebase Database SDK 로드
                     const script2 = document.createElement('script');
-                    script2.src = 'https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js';
+                    script2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
                     script2.onload = () => {
                         addLog('✅ Firebase Database SDK 로드 완료', 'success');
                         addLog('🎯 Firebase SDK 자동 로드 성공!', 'success');
