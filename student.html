@@ -1263,20 +1263,33 @@
             const apiKey = urlParams.get('api');
             const projectId = urlParams.get('project');
             
+            console.log('🔍 URL 파라미터 확인:', {
+                api: apiKey ? '있음' : '없음',
+                project: projectId ? '있음' : '없음',
+                class: urlParams.get('class') ? '있음' : '없음'
+            });
+            
             if (apiKey && projectId) {
+                console.log('✅ URL에서 Firebase 설정 발견! localStorage에 저장 중...');
+                
                 // localStorage에 저장
                 localStorage.setItem('user_firebase_apiKey', decodeURIComponent(apiKey));
                 localStorage.setItem('user_firebase_projectId', decodeURIComponent(projectId));
                 localStorage.setItem('user_firebase_databaseURL', `https://${decodeURIComponent(projectId)}-default-rtdb.asia-southeast1.firebasedatabase.app`);
                 
-                return {
+                const config = {
                     apiKey: decodeURIComponent(apiKey),
                     authDomain: `${decodeURIComponent(projectId)}.firebaseapp.com`,
                     databaseURL: `https://${decodeURIComponent(projectId)}-default-rtdb.asia-southeast1.firebasedatabase.app`,
                     projectId: decodeURIComponent(projectId),
                     storageBucket: `${decodeURIComponent(projectId)}.appspot.com`
                 };
+                
+                console.log('🔧 생성된 Firebase 설정:', config);
+                return config;
             }
+            
+            console.log('❌ URL에서 Firebase 설정을 찾을 수 없음');
             return null;
         }
 
