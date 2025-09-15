@@ -5026,14 +5026,15 @@
         // AI 분석 기능 (Gemini API 연동)
         // =================================
 
-        // 교사 ID 생성 (Firebase 저장용)
+        // 교사 ID 생성 (Firebase 저장용) - 수정: 일관된 ID 생성
         function getTeacherId() {
-            let teacherId = localStorage.getItem('teacherId');
-            if (!teacherId) {
-                const teacherName = getTeacherName();
-                teacherId = `teacher_${teacherName.replace(/[^a-zA-Z0-9가-힣]/g, '')}_${Date.now()}`;
-                localStorage.setItem('teacherId', teacherId);
-            }
+            const teacherName = getTeacherName();
+            // 교사 이름을 기반으로 일관된 ID 생성 (Date.now() 제거)
+            const normalizedName = teacherName.replace(/[^a-zA-Z0-9가-힣]/g, '').toLowerCase();
+            const teacherId = `teacher_${normalizedName}`;
+            
+            // localStorage에는 참고용으로만 저장
+            localStorage.setItem('teacherId', teacherId);
             return teacherId;
         }
 
@@ -5122,7 +5123,7 @@
                                     <li>"Create API key" 클릭</li>
                                     <li>생성된 키를 복사하여 위에 입력</li>
                                 </ol>
-                                <p style="margin: 10px 0 0 0; font-size: 12px; color: #666;">※ 학생들의 작성한 내용 중 좋은 의견을 발췌합니다.</p>
+                                <p style="margin: 10px 0 0 0; font-size: 12px; color: #666;">※ 무료로 사용 가능하며, 개인정보는 저장되지 않습니다.</p>
                             </div>
                             
                             <div style="display: flex; gap: 10px; justify-content: flex-end;">
